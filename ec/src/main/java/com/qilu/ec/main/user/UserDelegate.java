@@ -1,0 +1,48 @@
+package com.qilu.ec.main.user;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.joanzapata.iconify.widget.IconTextView;
+import com.qilu.core.delegates.bottom.BottomItemDelegate;
+import com.qilu.core.ec.R;
+import com.qilu.ec.main.option.OptionDelegate;
+
+@SuppressLint("ValidFragment")
+public class UserDelegate extends BottomItemDelegate implements View.OnClickListener {
+    private Context context;
+    private IconTextView optionImage;
+
+    @SuppressLint("ValidFragment")
+    public UserDelegate(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public Object setLayout() {
+//        return R.layout.delegate_user;
+        return R.layout.me;
+    }
+
+    @Override
+    public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        optionImage = rootView.findViewById(R.id.option);
+        optionImage.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.option) {
+            changeToOption();
+        }
+    }
+
+    private void changeToOption() {
+        getParentDelegate().getSupportDelegate().start(new OptionDelegate(context));
+    }
+}
