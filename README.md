@@ -1,3 +1,2 @@
-# ECampus
-QiLu Software Competition
 # MagicMirror
+an Application of PSGAN
