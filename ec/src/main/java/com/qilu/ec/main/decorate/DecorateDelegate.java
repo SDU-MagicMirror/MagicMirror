@@ -68,8 +68,8 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     private ImageView img_result;
 
     //保存待上传图片路径的字符串
-    private String img_1_path;
-    private String img_2_path;
+    private String img_1_path = null;
+    private String img_2_path = null;
 
     private ISignListener mISignListener = null;
 
@@ -252,42 +252,44 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     /**
      * 发送网络请求端,返回类型不确定，可能是图片相关类型
      */
-    private void sendRequest(String image1Path, String image2Path, int levelDegree, String[] paramsValues) {
-        // levelDegree: [0, 99]
-        levelDegree+=1;
-        float shade = ((float)levelDegree)/100.0f;
-        String[] paramsNames = {"local_flag", "eye_flag", "lip_flag", "face_flag"};
+    private void sendRequest(@Nullable String image1Path, @Nullable String image2Path, int levelDegree, String[] paramsValues) {
+        if(image1Path!=null&&(!image1Path.isEmpty())&&image2Path!=null&&(!image2Path.isEmpty())){
+            // levelDegree: [0, 99]
+            levelDegree+=1;
+            float shade = ((float)levelDegree)/100.0f;
+            String[] paramsNames = {"local_flag", "eye_flag", "lip_flag", "face_flag"};
 
-        RestClient.builder()
-                .url("/generate_makeup")
-                .file("example_image", image1Path)
-                .file("user_image", image2Path)
-                .params("shade_alpha",String.valueOf(shade))
-                .params(paramsNames[0],paramsValues[0])
-                .params(paramsNames[1], paramsValues[1])
-                .params(paramsNames[2], paramsValues[2])
-                .params(paramsNames[3], paramsValues[3])
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        showResultImage(response);
-                    }
-                })
-                .failure(new IFailure() {
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(getContext(),"请求失败",Toast.LENGTH_LONG).show();
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(int code, String msg) {
-                        Toast.makeText(getContext(),"请求出错，Msg："+msg+"\n"+"Code："+code,Toast.LENGTH_LONG).show();
-                    }
-                })
-                .loader(getContext())
-                .build()
-                .postWithFiles();
+            RestClient.builder()
+                    .url("/generate_makeup")
+                    .file("example_image", image1Path)
+                    .file("user_image", image2Path)
+                    .params("shade_alpha",String.valueOf(shade))
+                    .params(paramsNames[0],paramsValues[0])
+                    .params(paramsNames[1], paramsValues[1])
+                    .params(paramsNames[2], paramsValues[2])
+                    .params(paramsNames[3], paramsValues[3])
+                    .success(new ISuccess() {
+                        @Override
+                        public void onSuccess(String response) {
+                            showResultImage(response);
+                        }
+                    })
+                    .failure(new IFailure() {
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(getContext(),"请求失败",Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .error(new IError() {
+                        @Override
+                        public void onError(int code, String msg) {
+                            Toast.makeText(getContext(),"请求出错，Msg："+msg+"\n"+"Code："+code,Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .loader(getContext())
+                    .build()
+                    .postWithFiles();
+        }
     }
 
     private String[] getType() {
