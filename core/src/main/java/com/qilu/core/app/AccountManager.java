@@ -1,13 +1,8 @@
 package com.qilu.core.app;
 
 
-import com.qilu.core.net.RestClient;
-import com.qilu.core.net.callback.ISuccess;
+import com.alibaba.fastjson.JSONObject;
 import com.qilu.core.util.storage.QiluPreference;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 
 public class AccountManager {
 
@@ -16,38 +11,17 @@ public class AccountManager {
     }
 
     //保存用户登录状态，登录后调用
-    public static void setSignState(String phone,String pwd,boolean state) {
+    public static void setSignState(String phone,String pwd,String response,boolean state) {
         if(state){
-            QiluPreference.addCustomAppProfile("pwd",pwd);
+            JSONObject jsonObject = JSONObject.parseObject(response);
+            JSONObject data = jsonObject.getJSONObject("data");
+            String token = data.getString("token");
+            QiluPreference.addCustomAppProfile("password",pwd);
             QiluPreference.addCustomAppProfile("phone",phone);
-//            RestClient.builder().url("AboutUser/getUserInfo")
-//                    .params("phoneNum",phone)
-//                    .success(new ISuccess() {
-//                        @Override
-//                        public void onSuccess(String response) {
-//                            try {
-//                                JSONObject jsonObject = new JSONObject(response);
-//                                QiluPreference.addCustomAppProfile("id",jsonObject.getString("userId"));
-//                                QiluPreference.addCustomAppProfile("nick",jsonObject.getString("userName"));
-//                                QiluPreference.addCustomAppProfile("type",jsonObject.getString("userType"));
-//                                QiluPreference.addCustomAppProfile("name",jsonObject.getString("realName"));
-//                                QiluPreference.setAppFlag(SignTag.SIGN_TAG.name(), true);
-//                                System.out.println("id: "+jsonObject.getString("userId")
-//                                        +"; nick: "+jsonObject.getString("userName")
-//                                        +"; type: "+jsonObject.getString("userType")
-//                                        +"; name: "+jsonObject.getString("realName"));
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                        }
-//                    })
-//                    .build()
-//                    .post();
+            QiluPreference.addCustomAppProfile("token", token);
+
         }
-        else {
-            QiluPreference.setAppFlag(SignTag.SIGN_TAG.name(), false);
-        }
+        QiluPreference.setAppFlag(SignTag.SIGN_TAG.name(), state);
     }
 
     private static boolean isSignIn() {

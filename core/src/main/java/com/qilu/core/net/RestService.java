@@ -12,6 +12,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -28,26 +29,8 @@ public interface RestService {
     @GET
     Call<String> getWithNoParams(@Url String url);
 
-    @FormUrlEncoded
-    @POST
-    Call<String> post(@Url String url, @FieldMap WeakHashMap<String, String> params);
-
     @POST
     Call<String> postRaw(@Url String url, @Body RequestBody body);
-
-    @FormUrlEncoded
-    @PUT
-    Call<String> put(@Url String url, @FieldMap WeakHashMap<String, String> params);
-
-    @PUT
-    Call<String> putRaw(@Url String url, @Body RequestBody body);
-
-    @DELETE
-    Call<String> delete(@Url String url, @QueryMap WeakHashMap<String, String> params);
-
-    @Streaming
-    @GET
-    Call<ResponseBody> download(@Url String url, @QueryMap WeakHashMap<String, String> params);
 
     @Multipart
     @POST

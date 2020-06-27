@@ -1,5 +1,6 @@
 package com.qilu.ec.main;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,15 +13,27 @@ import com.qilu.ec.main.home.HomeDelegate;
 import com.qilu.ec.main.example.ExampleDelegate;
 import com.qilu.ec.main.decorate.DecorateDelegate;
 import com.qilu.ec.main.user.UserDelegate;
+import com.qilu.ec.sign.ISignListener;
 
 import java.util.LinkedHashMap;
 
 public class EcBottomDelegate extends BaseBottomDelegate {
 
+    private ISignListener mISignListener = null;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ISignListener) {
+            mISignListener = (ISignListener) activity;
+        }
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
 
     @Override
     public LinkedHashMap<BottomTabBean, BottomItemDelegate> setItems(ItemBuilder builder) {

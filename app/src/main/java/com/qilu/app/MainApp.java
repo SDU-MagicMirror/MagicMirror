@@ -29,10 +29,10 @@ public class MainApp extends Application {
                 .withIcon(new WeathericonsModule())
                 .withIcon(new SimpleLineIconsModule())
                 .withIcon(new IoniconsModule())
-                .withApiHost("http://10.211.55.4:5000/")
+                .withApiHost("http://106.13.96.60:8888/")
                 .withLoaderDelayed(1000)
                 .configure();
-        QiluPreference.addCustomAppProfile("apiHost","http://10.211.55.4:5000/");
+        QiluPreference.addCustomAppProfile("apiHost","http://106.13.96.60:8888/");
 
     }
 }

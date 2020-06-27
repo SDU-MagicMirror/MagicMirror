@@ -13,14 +13,15 @@ import android.widget.Toast;
 import com.qilu.core.delegates.QiluDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.net.RestClient;
+import com.qilu.core.net.callback.IError;
 import com.qilu.core.net.callback.IFailure;
 import com.qilu.core.net.callback.ISuccess;
 import java.io.IOException;
 
 
 public class SignUpDelegate extends QiluDelegate implements View.OnClickListener {
-    private String DEFAULT_AVATAR_DATA=null;
     private TextInputEditText mPhone = null;
+    private TextInputEditText mName = null;
     private TextInputEditText mPassword = null;
     private TextInputEditText mRePassword = null;
     private ISignListener mISignListener = null;
@@ -41,6 +42,7 @@ public class SignUpDelegate extends QiluDelegate implements View.OnClickListener
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
         mPhone = $(R.id.edit_sign_up_phone);
+        mName = $(R.id.edit_sign_up_name);
         mPassword = $(R.id.edit_sign_up_password);
         mRePassword = $(R.id.edit_sign_up_re_password);
         $(R.id.btn_sign_up).setOnClickListener(this);
@@ -49,6 +51,7 @@ public class SignUpDelegate extends QiluDelegate implements View.OnClickListener
     }
     private boolean checkForm() {
         final String phone = mPhone.getText().toString().trim();
+        final String name = mName.getText().toString().trim();
         final String password = mPassword.getText().toString().trim();
         final String rePassword = mRePassword.getText().toString().trim();
 
@@ -60,6 +63,14 @@ public class SignUpDelegate extends QiluDelegate implements View.OnClickListener
         }
         else {
             mPhone.setError(null);
+        }
+
+        if (name.isEmpty()) {
+            mName.setError("用户名不能为空");
+            isPass = false;
+        }
+        else {
+            mName.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 6) {
@@ -98,32 +109,36 @@ public class SignUpDelegate extends QiluDelegate implements View.OnClickListener
     }
     private void onClickSignUp() throws IOException {
         final String phone= mPhone.getText().toString();
+        final String name= mName.getText().toString();
         final String pwd=mPassword.getText().toString();
-//        if (checkForm()) {
-//            RestClient.builder()
-//                    .url("Register/createNewUser")
-//                    .params("phoneNum", mPhone.getText().toString().trim())
-//                    .params("realName", mName.getText().toString())
-//                    .params("passWord", mPassword.getText().toString().trim())
-//                    .params("userType",selectedTypeIndex)
-//                    .params("userId",mCode.getText().toString().trim())
-//                    .success(new ISuccess() {
-//                        @Override
-//                        public void onSuccess(String response) {
-//                            System.out.println(response);
-//                            SignHandler.onSignUp(response, mISignListener);
-//                        }
-//                    })
-//                    .failure(new IFailure() {
-//                        @Override
-//                        public void onFailure() {
-//                            Toast.makeText(getContext(),"网络错误",Toast.LENGTH_LONG).show();
-//                        }
-//                    })
-//                    .loader(getContext())
-//                    .build()
-//                    .post();
-//        }
+        if (checkForm()) {
+            RestClient.builder()
+                    .url("/register")
+                    .params("phone", phone)
+                    .params("name", name)
+                    .params("password", pwd)
+                    .success(new ISuccess() {
+                        @Override
+                        public void onSuccess(String response) {
+                            SignHandler.onSignUp(response, mISignListener);
+                        }
+                    })
+                    .failure(new IFailure() {
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(getContext(),"网络错误",Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .error(new IError() {
+                        @Override
+                        public void onError(int code, String msg) {
+                            Toast.makeText(getContext(), "注册失败："+msg+" 状态码："+code,Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .loader(getContext())
+                    .build()
+                    .postRaw();
+        }
     }
 
 }

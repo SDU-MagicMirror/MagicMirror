@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.qilu.core.activities.ProxyActivity;
+import com.qilu.core.app.AccountManager;
 import com.qilu.core.delegates.QiluDelegate;
 import com.qilu.ec.launcher.LauncherDelegate;
 import com.qilu.ec.main.EcBottomDelegate;
@@ -44,32 +45,32 @@ public class MainActivity extends ProxyActivity implements ISignListener,ILaunch
     }
 
     @Override
+    public void onSignInFailure(String code) {
+        if(code.equals("400")){
+            Toast.makeText(this, "手机号或密码错误", Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(this, "内部错误", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onTokenExpired() {
+        AccountManager.setSignState("","","",false);
+        getSupportDelegate().startWithPop(new SignInDelegate());
+    }
+
+    @Override
     public void onSignUpSuccess() {
         Toast.makeText(this, "注册成功", Toast.LENGTH_LONG).show();
         getSupportDelegate().startWithPop(new SignInDelegate());
     }
 
     @Override
-    public void onSignUpFailure(String response) {
-        if(response.equals("4")||response.equals("5")||response.equals("6")){
-            Toast.makeText(this, "重复注册，请登录！", Toast.LENGTH_LONG).show();
+    public void onSignUpFailure(String code) {
+        if(code.equals("422")){
+            Toast.makeText(this, "重复注册，请登录", Toast.LENGTH_LONG).show();
         }else {
-            Toast.makeText(this, "注册失败", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void onSignInFailure(String response) {
-        switch(response){
-            case "-1":
-                Toast.makeText(this, "帐号不存在", Toast.LENGTH_LONG).show();
-                break;
-            case "1":
-                Toast.makeText(this, "密码错误", Toast.LENGTH_LONG).show();
-                break;
-            default:
-                Toast.makeText(this, "登录失败", Toast.LENGTH_LONG).show();
-                break;
+            Toast.makeText(this, "内部错误", Toast.LENGTH_LONG).show();
         }
     }
 

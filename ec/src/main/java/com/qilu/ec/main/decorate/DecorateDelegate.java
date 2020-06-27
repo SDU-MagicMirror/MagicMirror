@@ -1,6 +1,7 @@
 package com.qilu.ec.main.decorate;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,6 +32,7 @@ import com.qilu.core.util.callback.CallbackManager;
 import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
 import com.qilu.core.util.storage.QiluPreference;
+import com.qilu.ec.sign.ISignListener;
 import com.qilu.ui.image.GlideTools;
 import hearsilent.discreteslider.DiscreteSlider;
 
@@ -68,6 +70,16 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     //保存待上传图片路径的字符串
     private String img_1_path;
     private String img_2_path;
+
+    private ISignListener mISignListener = null;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ISignListener) {
+            mISignListener = (ISignListener) activity;
+        }
+    }
 
 
     @SuppressLint("ValidFragment")

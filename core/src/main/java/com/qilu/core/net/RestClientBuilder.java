@@ -22,18 +22,12 @@ public final class RestClientBuilder {
     private ISuccess mISuccess = null;
     private IFailure mIFailure = null;
     private IError mIError = null;
-    private RequestBody mBody = null;
     private Context mContext = null;
     private LoaderStyle mLoaderStyle = null;
 
     // upload
     private String mFile = null;
     private WeakHashMap<String, String> mFiles = new WeakHashMap<>();
-
-    // download
-    private String mDownloadDir = null;
-    private String mExtension = null;
-    private String mName = null;
 
 
     RestClientBuilder() {
@@ -64,25 +58,6 @@ public final class RestClientBuilder {
         return this;
     }
 
-    public final RestClientBuilder name(String name) {
-        this.mName = name;
-        return this;
-    }
-
-    public final RestClientBuilder dir(String dir) {
-        this.mDownloadDir = dir;
-        return this;
-    }
-
-    public final RestClientBuilder extension(String extension) {
-        this.mExtension = extension;
-        return this;
-    }
-
-    public final RestClientBuilder raw(String raw) {
-        this.mBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), raw);
-        return this;
-    }
 
     public final RestClientBuilder onRequest(IRequest iRequest) {
         this.mIRequest = iRequest;
@@ -119,9 +94,8 @@ public final class RestClientBuilder {
 
     public final RestClient build() {
         return new RestClient(mUrl, PARAMS,
-                mDownloadDir, mExtension, mName,
                 mIRequest, mISuccess, mIFailure,
-                mIError, mBody, mFiles, mFile, mContext,
+                mIError, mFiles, mFile, mContext,
                 mLoaderStyle);
     }
 }

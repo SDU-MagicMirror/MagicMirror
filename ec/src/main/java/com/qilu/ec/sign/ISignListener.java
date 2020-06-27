@@ -4,7 +4,11 @@ public interface ISignListener {
 
     void onSignInSuccess();
 
+    void onSignInFailure(String code);
+
+    void onTokenExpired();
+
     void onSignUpSuccess();
-    void onSignUpFailure(String response);
-    void onSignInFailure(String response);
+
+    void onSignUpFailure(String code);
 }

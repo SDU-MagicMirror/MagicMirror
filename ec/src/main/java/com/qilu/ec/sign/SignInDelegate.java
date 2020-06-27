@@ -7,10 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.view.View;
 import android.widget.Toast;
-
 import com.qilu.core.delegates.QiluDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.net.RestClient;
+import com.qilu.core.net.callback.IError;
 import com.qilu.core.net.callback.IFailure;
 import com.qilu.core.net.callback.ISuccess;
 
@@ -58,29 +58,32 @@ public class SignInDelegate extends QiluDelegate implements View.OnClickListener
         if (checkForm()) {
             final String phone= mPhone.getText().toString().trim();
             final String pwd=mPassword.getText().toString().trim();
-            SignHandler.onSignIn(phone,pwd,"0", mISignListener);
-
-//            RestClient.builder()
-//                    .url("http://123.207.13.112:8080/qilu/Login/Verify")
-//                    .params("phoneNum",phone)
-//                    .params("passWord",pwd)
-//                    .success(new ISuccess() {
-//                        @Override
-//                        public void onSuccess(String response) {
-//                            System.out.println("response is"+" "+response);
-//                            SignHandler.onSignIn(phone,pwd,response, mISignListener);
-//                        }
-//                    })
-//                    .failure(new IFailure() {
-//                                 @Override
-//                                 public void onFailure() {
-//                                     Toast.makeText(getContext(), "网络错误",Toast.LENGTH_LONG).show();
-//                                 }
-//                             }
-//                    )
-//                    .loader(getContext())
-//                    .build()
-//                    .post();
+            RestClient.builder()
+                    .url("/login")
+                    .params("phone",phone)
+                    .params("password",pwd)
+                    .success(new ISuccess() {
+                        @Override
+                        public void onSuccess(String response) {
+                            SignHandler.onSignIn(phone,pwd,response, mISignListener);
+                        }
+                    })
+                    .failure(new IFailure() {
+                                 @Override
+                                 public void onFailure() {
+                                     Toast.makeText(getContext(), "网络错误",Toast.LENGTH_LONG).show();
+                                 }
+                             }
+                    )
+                    .error(new IError() {
+                        @Override
+                        public void onError(int code, String msg) {
+                            Toast.makeText(getContext(), "登录失败："+msg+" 状态码："+code,Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .loader(getContext())
+                    .build()
+                    .postRaw();
         }
     }
     private boolean checkForm() {
