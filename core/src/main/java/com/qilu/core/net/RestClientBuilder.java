@@ -7,12 +7,7 @@ import com.qilu.core.net.callback.IFailure;
 import com.qilu.core.net.callback.IRequest;
 import com.qilu.core.net.callback.ISuccess;
 import com.qilu.core.ui.loader.LoaderStyle;
-
-import java.io.File;
 import java.util.WeakHashMap;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 public final class RestClientBuilder {
 

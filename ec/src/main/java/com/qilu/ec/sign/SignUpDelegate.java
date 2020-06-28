@@ -1,13 +1,10 @@
 package com.qilu.ec.sign;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.Toast;
 import com.qilu.core.delegates.QiluDelegate;
@@ -132,7 +129,11 @@ public class SignUpDelegate extends QiluDelegate implements View.OnClickListener
                     .error(new IError() {
                         @Override
                         public void onError(int code, String msg) {
-                            Toast.makeText(getContext(), "注册失败："+msg+" 状态码："+code,Toast.LENGTH_LONG).show();
+                            if(code == 422){
+                                Toast.makeText(getContext(), "重复注册，请登录", Toast.LENGTH_LONG).show();
+                            }else {
+                                Toast.makeText(getContext(), "内部错误："+msg+"，Code："+code, Toast.LENGTH_LONG).show();
+                            }
                         }
                     })
                     .loader(getContext())

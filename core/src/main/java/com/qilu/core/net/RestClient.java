@@ -2,7 +2,6 @@ package com.qilu.core.net;
 
 import android.content.Context;
 
-import com.alibaba.fastjson.JSONObject;
 import com.qilu.core.net.callback.IError;
 import com.qilu.core.net.callback.IFailure;
 import com.qilu.core.net.callback.IRequest;
@@ -10,9 +9,10 @@ import com.qilu.core.net.callback.ISuccess;
 import com.qilu.core.net.callback.RequestCallbacks;
 import com.qilu.core.ui.loader.LoaderStyle;
 import com.qilu.core.ui.loader.QiluLoader;
+import com.qilu.core.util.storage.QiluPreference;
+
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.WeakHashMap;
 import okhttp3.MediaType;
@@ -35,6 +35,8 @@ public final class RestClient {
 
     private final Context CONTEXT;
     private final LoaderStyle LOADER_STYLE;
+
+    private final String TOKEN;
 
     RestClient(String url,
                WeakHashMap<String, String> params,
@@ -61,6 +63,8 @@ public final class RestClient {
         // loader
         this.CONTEXT = context;
         this.LOADER_STYLE = loaderStyle;
+
+        this.TOKEN = "Bearer "+QiluPreference.getCustomAppProfile("token");
     }
 
     public static RestClientBuilder builder() {
@@ -84,45 +88,90 @@ public final class RestClient {
                 call = service.get(URL, PARAMS);
                 break;
 
+            case GET_WITH_TOKEN:
+                call = service.getWithToken(TOKEN, URL, PARAMS);
+                break;
+
             case GET_NO_PARAMS:
-                call = service.getWithNoParams(URL);
+                call = service.getNoParams(URL);
+                break;
+
+            case GET_NO_PARAMS_WITH_TOKEN:
+                call = service.getNoParamsWithToken(TOKEN, URL);
                 break;
 
             case POST_RAW:
-                WeakHashMap<String, RequestBody> tempParams = new WeakHashMap<>();
+                WeakHashMap<String, RequestBody> tempParams1 = new WeakHashMap<>();
                 for (String key : PARAMS.keySet()) {
                     RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), PARAMS.get(key) == null ? "" : PARAMS.get(key));
-                    tempParams.put(key, requestBody);
+                    tempParams1.put(key, requestBody);
                 }
-                call = service.postRaw(URL, tempParams);
+                call = service.postRaw(URL, tempParams1);
+                break;
+
+            case POST_RAW_WITH_TOKEN:
+                WeakHashMap<String, RequestBody> tempParams2 = new WeakHashMap<>();
+                for (String key : PARAMS.keySet()) {
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), PARAMS.get(key) == null ? "" : PARAMS.get(key));
+                    tempParams2.put(key, requestBody);
+                }
+                call = service.postRawWithToken(TOKEN, URL, tempParams2);
                 break;
 
             case POST_WITH_FILES:
-                WeakHashMap<String, RequestBody> requestBodyMap = new WeakHashMap<>();
-                List<MultipartBody.Part> partList = new ArrayList<>();
+                WeakHashMap<String, RequestBody> requestBodyMap1 = new WeakHashMap<>();
+                List<MultipartBody.Part> partList1 = new ArrayList<>();
                 for (WeakHashMap.Entry<String, String> entry : PARAMS.entrySet()) {
                     String key = entry.getKey();
                     String val = entry.getValue();
                     RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"), val);
-                    requestBodyMap.put(key, body);
+                    requestBodyMap1.put(key, body);
                 }
                 for (WeakHashMap.Entry<String, String> entry : FILES.entrySet()) {
                     String key = entry.getKey();
                     File val = new File(entry.getValue());
                     RequestBody body = RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()), val);
                     MultipartBody.Part part = MultipartBody.Part.createFormData(key, val.getName(), body);
-                    partList.add(part);
+                    partList1.add(part);
                 }
-                call = service.postWithFiles(URL, requestBodyMap, partList);
+                call = service.postWithFiles(URL, requestBodyMap1, partList1);
+                break;
+
+            case POST_WITH_FILES_WITH_TOKEN:
+                WeakHashMap<String, RequestBody> requestBodyMap2 = new WeakHashMap<>();
+                List<MultipartBody.Part> partList2 = new ArrayList<>();
+                for (WeakHashMap.Entry<String, String> entry : PARAMS.entrySet()) {
+                    String key = entry.getKey();
+                    String val = entry.getValue();
+                    RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"), val);
+                    requestBodyMap2.put(key, body);
+                }
+                for (WeakHashMap.Entry<String, String> entry : FILES.entrySet()) {
+                    String key = entry.getKey();
+                    File val = new File(entry.getValue());
+                    RequestBody body = RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()), val);
+                    MultipartBody.Part part = MultipartBody.Part.createFormData(key, val.getName(), body);
+                    partList2.add(part);
+                }
+                call = service.postWithFilesWithToken(TOKEN, URL, requestBodyMap2, partList2);
                 break;
 
             case UPLOAD:
-                File file = new File(FILE);
-                final RequestBody requestFile =
-                        RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()), file);
-                final MultipartBody.Part body =
-                        MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-                call = service.upload(URL,body);
+                File file1 = new File(FILE);
+                final RequestBody requestFile1 =
+                        RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()), file1);
+                final MultipartBody.Part body1 =
+                        MultipartBody.Part.createFormData("file", file1.getName(), requestFile1);
+                call = service.upload(URL,body1);
+                break;
+
+            case UPLOAD_WITH_TOKEN:
+                File file2 = new File(FILE);
+                final RequestBody requestFile2 =
+                        RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()), file2);
+                final MultipartBody.Part body2 =
+                        MultipartBody.Part.createFormData("file", file2.getName(), requestFile2);
+                call = service.uploadWithToken(TOKEN, URL,body2);
                 break;
             default:
                 break;
@@ -146,20 +195,35 @@ public final class RestClient {
     public final void get() {
         request(HttpMethod.GET);
     }
-    public final void getWithNoParams() {
+    public final void getWithToken() {
+        request(HttpMethod.GET_WITH_TOKEN);
+    }
+
+    public final void getNoParams() {
         request(HttpMethod.GET_NO_PARAMS);
+    }
+    public final void getNoParamsWithToken() {
+        request(HttpMethod.GET_NO_PARAMS_WITH_TOKEN);
     }
 
     public final void postRaw() {
         request(HttpMethod.POST_RAW);
     }
+    public final void postRawWithToken() {
+        request(HttpMethod.POST_RAW_WITH_TOKEN);
+    }
 
     public final void postWithFiles() {
         request(HttpMethod.POST_WITH_FILES);
-
+    }
+    public final void postWithFilesWithToken() {
+        request(HttpMethod.POST_WITH_FILES_WITH_TOKEN);
     }
 
     public final void upload() {
         request(HttpMethod.UPLOAD);
+    }
+    public final void uploadWithToken() {
+        request(HttpMethod.UPLOAD_WITH_TOKEN);
     }
 }
