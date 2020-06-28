@@ -75,7 +75,7 @@
                         android:layout_height="50dp"
                         android:background="@drawable/left_border"
                         android:gravity="center"
-                        android:text="@string/starPlus"
+                        android:text="下载"
                         android:textColor="@color/lightslategray"
                         android:textSize="@dimen/opTextSize2"
                         tools:ignore="RelativeOverlap" />

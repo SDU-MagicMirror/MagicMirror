@@ -39,9 +39,9 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         ExampleItem exampleItem = mValues.get(position);
-        holder.textView.setText(exampleItem.itemNumber);
-        holder.honorView.setText(exampleItem.itemNumber2);
-        holder.imageView.setImageDrawable(exampleItem.image);
+        holder.textView.setText(exampleItem.getItemNumber());
+        holder.honorView.setText(exampleItem.getItemNumber2());
+        holder.imageView.setImageDrawable(exampleItem.getImage());
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ShowToast")

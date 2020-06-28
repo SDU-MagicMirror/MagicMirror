@@ -277,12 +277,46 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="3dp"
                             android:gravity="center"
-                            android:textColor="@color/black"
                             android:text="{fa-bookmark}"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/opTextSize2" />
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/news_create"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingTop="@dimen/layout_margin"
+                        android:paddingBottom="@dimen/layout_margin">
+
+                        <TextView
+                            android:id="@+id/center_bar_text_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/center_bar_image_2"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="3dp"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="发布动态"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+
+                        <com.joanzapata.iconify.widget.IconTextView
+                            android:id="@+id/center_bar_image_2"
+                            android:layout_width="27dp"
+                            android:layout_height="27dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
+                            android:text="{fa-file}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/opTextSize2" />
+                    </RelativeLayout>
+
+                    <!--<RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -313,7 +347,7 @@
                             android:textColor="@color/black"
                             android:text="{fa-history}"
                             android:textSize="@dimen/opTextSize2" />
-                    </RelativeLayout>
+                    </RelativeLayout>-->
 
                     <RelativeLayout
                         android:layout_width="0dp"
@@ -343,8 +377,8 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="3dp"
                             android:gravity="center"
-                            android:textColor="@color/black"
                             android:text="{fa-cloud-upload}"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/opTextSize2" />
                     </RelativeLayout>
                 </android.support.v7.widget.LinearLayoutCompat>

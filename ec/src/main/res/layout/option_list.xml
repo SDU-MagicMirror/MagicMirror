@@ -57,6 +57,18 @@
             android:textSize="@dimen/opTextSize2" />
 
         <TextView
+            android:id="@+id/user_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/textSep"
+            android:layout_marginBottom="@dimen/textSep"
+            android:background="@color/white"
+            android:textColor="@color/black"
+            android:padding="@dimen/layout_margin"
+            android:text="更改头像"
+            android:textSize="@dimen/opTextSize2" />
+
+        <TextView
             android:id="@+id/honor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
