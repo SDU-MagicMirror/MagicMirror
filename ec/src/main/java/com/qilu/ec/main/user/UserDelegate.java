@@ -42,29 +42,6 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
         optionImage = rootView.findViewById(R.id.option);
         optionImage.setOnClickListener(this);
-        RestClient.builder()
-                .url("/account")
-                .loader(getContext())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        Toast.makeText(getContext(),response,Toast.LENGTH_LONG).show();
-                    }
-                })
-                .failure(new IFailure() {
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(getContext(),"请求失败",Toast.LENGTH_LONG).show();
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(int code, String msg) {
-                        Toast.makeText(getContext(),"请求失败，"+code+"，"+msg,Toast.LENGTH_LONG).show();
-                    }
-                })
-                .build()
-                .getNoParamsWithToken();
     }
 
     @Override
