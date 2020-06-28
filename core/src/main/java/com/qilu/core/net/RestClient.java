@@ -12,6 +12,7 @@ import com.qilu.core.ui.loader.LoaderStyle;
 import com.qilu.core.ui.loader.QiluLoader;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.WeakHashMap;
 import okhttp3.MediaType;
@@ -88,9 +89,12 @@ public final class RestClient {
                 break;
 
             case POST_RAW:
-                String strEntity = JSONObject.toJSONString(PARAMS);
-                RequestBody body_raw = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"),strEntity);
-                call = service.postRaw(URL, body_raw);
+                WeakHashMap<String, RequestBody> tempParams = new WeakHashMap<>();
+                for (String key : PARAMS.keySet()) {
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), PARAMS.get(key) == null ? "" : PARAMS.get(key));
+                    tempParams.put(key, requestBody);
+                }
+                call = service.postRaw(URL, tempParams);
                 break;
 
             case POST_WITH_FILES:

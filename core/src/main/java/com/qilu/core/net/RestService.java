@@ -29,8 +29,9 @@ public interface RestService {
     @GET
     Call<String> getWithNoParams(@Url String url);
 
+    @Multipart
     @POST
-    Call<String> postRaw(@Url String url, @Body RequestBody body);
+    Call<String> postRaw(@Url String url, @PartMap WeakHashMap<String, RequestBody> params);
 
     @Multipart
     @POST

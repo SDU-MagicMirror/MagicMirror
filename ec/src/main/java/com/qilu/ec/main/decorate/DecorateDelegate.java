@@ -40,10 +40,6 @@ import hearsilent.discreteslider.DiscreteSlider;
 public class DecorateDelegate extends BottomItemDelegate implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
     private Context context;
-//    private int position;
-
-//    private final int POSITION_ONE = 10001;
-//    private final int POSITION_TWO = 10002;
 
 
     private IconTextView button_1;
