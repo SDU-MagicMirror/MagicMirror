@@ -19,7 +19,7 @@ import java.util.List;
  * {@link RecyclerView.Adapter} that can display a {@link ExampleItem}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExampleRecyclerViewAdapter.ViewHolder> {
+public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExampleRecyclerViewAdapter.ViewHolder> implements View.OnClickListener {
     private Context context;
     private List<ExampleItem> mValues;
 
@@ -40,35 +40,37 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
     public void onBindViewHolder(final ViewHolder holder, int position) {
         ExampleItem exampleItem = mValues.get(position);
         holder.textView.setText(exampleItem.getItemNumber());
-        holder.honorView.setText(exampleItem.getItemNumber2());
         holder.imageView.setImageDrawable(exampleItem.getImage());
 
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ShowToast")
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, holder.textView.getText(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        holder.buttonView.setOnClickListener(this);
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        if (mValues != null)
+            return mValues.size();
+        else
+            return 0;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void onClick(View v) {
+        //只有一个控件监听，不用设if判断
+        // TODO 将id,图和文字三个数据放到一个数据对象json存到本地缓存文件中，json对象可以沿用sample.ExampleItem类（将其中的Drawable改为String即可）
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
         //public final View mView;
+        public TextView buttonView;
         public TextView textView;
-        public TextView honorView;
         public ImageView imageView;
         //public ExampleItem mItem;
 
         public ViewHolder(View view/*, Context context*/) {
             super(view);
             //mView = view;
-            textView = (TextView) view.findViewById(R.id.item_number);
-            honorView = (TextView) view.findViewById(R.id.item_number2);
+            buttonView = view.findViewById(R.id.button);
+            textView = (TextView) view.findViewById(R.id.text_content);
             imageView = (ImageView) view.findViewById(R.id.image);
         }
     }

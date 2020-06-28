@@ -10,7 +10,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
+import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.ec.main.sample.ExampleItem;
@@ -18,7 +20,7 @@ import com.qilu.ec.main.sample.ExampleItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExampleDelegate extends BottomItemDelegate {
+public class ExampleDelegate extends BottomItemDelegate implements View.OnClickListener {
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
@@ -44,6 +46,8 @@ public class ExampleDelegate extends BottomItemDelegate {
             }
             recyclerView.setAdapter(new MyExampleRecyclerViewAdapter(getActivity(), generateDatas()));
         }
+        IconTextView refresh = view.findViewById(R.id.refresh);
+        refresh.setOnClickListener(this);
     }
 
     @Override
@@ -59,9 +63,18 @@ public class ExampleDelegate extends BottomItemDelegate {
 
         List<ExampleItem> exampleItems = new ArrayList<ExampleItem>();
         for (int i = 0; i < 4; i++) {
-            ExampleItem exampleItem = new ExampleItem(String.valueOf(i),"名字" + (i + 1), "头衔" + (i + 1), female);
+            ExampleItem exampleItem = new ExampleItem(String.valueOf(i), "内容" + (i + 1), female);
             exampleItems.add(exampleItem);
         }
         return exampleItems;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.refresh) {
+            //刷新界面
+            // TODO 重新请求网络，需要和刚进入页面时用到同样的网络请求方法代替上面的generateDatas
+            Toast.makeText(getContext(), "刷新占位符", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconTextView;
@@ -17,12 +19,28 @@ import com.qilu.core.net.callback.IError;
 import com.qilu.core.net.callback.IFailure;
 import com.qilu.core.net.callback.ISuccess;
 import com.qilu.ec.main.option.OptionDelegate;
+import com.google.gson.Gson;
+import com.qilu.ec.main.sample.user_profile.UserProfile;
+import com.qilu.ec.main.sample.user_profile.UserProfile_Data_Data;
+import com.qilu.ec.main.util.Image;
+
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 @SuppressLint("ValidFragment")
 public class UserDelegate extends BottomItemDelegate implements View.OnClickListener {
     private Context context;
     private IconTextView optionImage;
-    private RelativeLayout news_create;
+    private UserProfile_Data_Data data;
+
+    private CircleImageView user_img;
+    private TextView text_name;
+    private TextView text_honor;
+
+    private RelativeLayout star;
+    private RelativeLayout history;
+    private RelativeLayout upload;
 
     @SuppressLint("ValidFragment")
     public UserDelegate(Context context) {
@@ -39,27 +57,42 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
         optionImage = rootView.findViewById(R.id.option);
         optionImage.setOnClickListener(this);
-        news_create = rootView.findViewById(R.id.news_create);
-        news_create.setOnClickListener(this);
+        user_img = rootView.findViewById(R.id.user_img);
+        text_name = rootView.findViewById(R.id.text_name);
+        text_honor = rootView.findViewById(R.id.text_honor);
+        star = rootView.findViewById(R.id.star);
+        history = rootView.findViewById(R.id.history);
+        upload = rootView.findViewById(R.id.upload);
+        // TODO 点击star跳转到示例收藏
+        // TODO 点击history跳转到美妆历史
+        history.setOnClickListener(this);
+        // TODO 点击upload跳转到上传示例
+
         RestClient.builder()
                 .url("/account")
                 .loader(getContext())
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
-                        Toast.makeText(getContext(),response,Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+                        Gson gson = new Gson();
+                        UserProfile userProfile = gson.fromJson(response, UserProfile.class);
+                        data = userProfile.getData().getData();
+                        Image.showResultImage(data.getAvatar(), user_img);
+                        text_name.setText(data.getUserName());
+                        text_honor.setText(data.getSignature());
                     }
                 })
                 .failure(new IFailure() {
                     @Override
                     public void onFailure() {
-                        Toast.makeText(getContext(),"请求失败",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "请求失败", Toast.LENGTH_LONG).show();
                     }
                 })
                 .error(new IError() {
                     @Override
                     public void onError(int code, String msg) {
-                        Toast.makeText(getContext(),"请求失败，"+code+"，"+msg,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "请求失败，" + code + "，" + msg, Toast.LENGTH_LONG).show();
                     }
                 })
                 .build()
@@ -70,17 +103,18 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
     public void onClick(View v) {
         if (v.getId() == R.id.option) {
             changeToOption();
-        } else if (v.getId() == R.id.news_create) {
-            //发表动态
-            create_news();
+        } else if (v.getId() == R.id.history) {
+            //跳转到美妆历史
+            getParentDelegate().getSupportDelegate().start(new HistoryDelegate(getImageBase64List()));
         }
     }
 
-    private void create_news() {
-        getParentDelegate().getSupportDelegate().start(new NewsCreateDelegate());
+    private void changeToOption() {
+        getParentDelegate().getSupportDelegate().start(new OptionDelegate(context,data));
     }
 
-    private void changeToOption() {
-        getParentDelegate().getSupportDelegate().start(new OptionDelegate(context));
+    private List<String> getImageBase64List() {
+        // TODO 从本地获取图片列表，传入adapter中
+        return null;
     }
 }

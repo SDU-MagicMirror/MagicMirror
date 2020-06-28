@@ -43,7 +43,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:gravity="center"
-                        android:text="@string/starPlus"
+                        android:text="下载"
                         android:textColor="@color/lightslategray"
                         android:textSize="@dimen/opTextSize2"
                         tools:ignore="RelativeOverlap" />
@@ -55,13 +55,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/separator">
-
-                <TextView
-                    android:id="@+id/text_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="正文addddddddd"
-                    android:textSize="@dimen/opTextSize3" />
 
                 <ImageView
                     android:id="@+id/image"

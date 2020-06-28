@@ -8,13 +8,11 @@ import android.graphics.drawable.Drawable;
 public class ExampleItem {
     private String id;
     private String itemNumber;
-    private String itemNumber2;
     private Drawable image;
 
-    public ExampleItem(String id, String itemNumber, String itemNumber2, Drawable image) {
+    public ExampleItem(String id, String itemNumber, Drawable image) {
         this.id = id;
         this.itemNumber = itemNumber;
-        this.itemNumber2 = itemNumber2;
         this.image = image;
     }
 
@@ -32,14 +30,6 @@ public class ExampleItem {
 
     public void setItemNumber(String itemNumber) {
         this.itemNumber = itemNumber;
-    }
-
-    public String getItemNumber2() {
-        return itemNumber2;
-    }
-
-    public void setItemNumber2(String itemNumber2) {
-        this.itemNumber2 = itemNumber2;
     }
 
     public Drawable getImage() {
