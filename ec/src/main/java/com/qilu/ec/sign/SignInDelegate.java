@@ -78,7 +78,11 @@ public class SignInDelegate extends QiluDelegate implements View.OnClickListener
                     .error(new IError() {
                         @Override
                         public void onError(int code, String msg) {
-                            Toast.makeText(getContext(), "登录失败："+msg+" 状态码："+code,Toast.LENGTH_LONG).show();
+                            if(code == 400){
+                                Toast.makeText(getContext(), "当前手机号尚未注册或密码错误", Toast.LENGTH_LONG).show();
+                            }else {
+                                Toast.makeText(getContext(), "内部错误："+msg+"，Code："+code, Toast.LENGTH_LONG).show();
+                            }
                         }
                     })
                     .loader(getContext())
