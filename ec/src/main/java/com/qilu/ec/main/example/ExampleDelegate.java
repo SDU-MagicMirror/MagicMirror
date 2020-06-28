@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
+import com.qilu.core.util.storage.QiluPreference;
 import com.qilu.ec.main.sample.ExampleItem;
 
 import java.util.ArrayList;

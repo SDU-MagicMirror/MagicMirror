@@ -9,13 +9,18 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconTextView;
+import com.qilu.core.app.Qilu;
 import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.net.RestClient;
 import com.qilu.core.net.callback.IError;
 import com.qilu.core.net.callback.IFailure;
 import com.qilu.core.net.callback.ISuccess;
+import com.qilu.core.util.storage.QiluPreference;
 import com.qilu.ec.main.option.OptionDelegate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("ValidFragment")
 public class UserDelegate extends BottomItemDelegate implements View.OnClickListener {
