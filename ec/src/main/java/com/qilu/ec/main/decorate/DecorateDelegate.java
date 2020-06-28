@@ -232,9 +232,9 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     /**
      * 结果图显示到屏幕上
      */
-    private void showResultImage(@Nullable String image) {
-        if(image!=null&&(!image.isEmpty())){
-            byte[] bytes = Base64.decode(image, Base64.DEFAULT);
+    private void showResultImage(@Nullable String base64Str) {
+        if(base64Str!=null&&(!base64Str.isEmpty())){
+            byte[] bytes = Base64.decode(base64Str, Base64.DEFAULT);
             Bitmap bitmap =  BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             img_result.setImageBitmap(bitmap);
 
