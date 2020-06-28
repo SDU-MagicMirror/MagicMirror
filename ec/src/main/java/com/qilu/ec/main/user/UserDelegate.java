@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconTextView;
@@ -21,6 +22,7 @@ import com.qilu.ec.main.option.OptionDelegate;
 public class UserDelegate extends BottomItemDelegate implements View.OnClickListener {
     private Context context;
     private IconTextView optionImage;
+    private RelativeLayout news_create;
 
     @SuppressLint("ValidFragment")
     public UserDelegate(Context context) {
@@ -37,6 +39,8 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
         optionImage = rootView.findViewById(R.id.option);
         optionImage.setOnClickListener(this);
+        news_create = rootView.findViewById(R.id.news_create);
+        news_create.setOnClickListener(this);
         RestClient.builder()
                 .url("/account")
                 .loader(getContext())
@@ -66,7 +70,14 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
     public void onClick(View v) {
         if (v.getId() == R.id.option) {
             changeToOption();
+        } else if (v.getId() == R.id.news_create) {
+            //发表动态
+            create_news();
         }
+    }
+
+    private void create_news() {
+        getParentDelegate().getSupportDelegate().start(new NewsCreateDelegate());
     }
 
     private void changeToOption() {

@@ -46,5 +46,20 @@
       <option name="name" value="$USER_HOME$/Library/Android/sdk/extras/android/m2repository" />
       <option name="url" value="file:$USER_HOME$/Library/Android/sdk/extras/android/m2repository" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="D:\study\Android_SDK\extras\m2repository" />
+      <option name="name" value="D:\study\Android_SDK\extras\m2repository" />
+      <option name="url" value="file:/$PROJECT_DIR$/../../Android_SDK/extras/m2repository" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="D:\study\Android_SDK\extras\android\m2repository" />
+      <option name="name" value="D:\study\Android_SDK\extras\android\m2repository" />
+      <option name="url" value="file:/$PROJECT_DIR$/../../Android_SDK/extras/android/m2repository" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="D:\study\Android_SDK\extras\google\m2repository" />
+      <option name="name" value="D:\study\Android_SDK\extras\google\m2repository" />
+      <option name="url" value="file:/$PROJECT_DIR$/../../Android_SDK/extras/google/m2repository" />
+    </remote-repository>
   </component>
 </project>
