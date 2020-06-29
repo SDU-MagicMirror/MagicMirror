@@ -2,18 +2,33 @@ package com.qilu.ec.main.option;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.qilu.core.delegates.QiluDelegate;
+import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
+import com.qilu.core.net.RestClient;
+import com.qilu.core.util.callback.CallbackManager;
+import com.qilu.core.util.callback.CallbackType;
+import com.qilu.core.util.callback.IGlobalCallback;
+import com.qilu.core.util.storage.QiluPreference;
+import com.qilu.ec.main.decorate.DecorateDelegate;
+import com.qilu.ec.main.sample.user_info.UserInfo;
 import com.qilu.ec.main.sample.user_profile.UserProfile_Data_Data;
+import com.qilu.ec.main.user.UserDelegate;
+import com.qilu.ui.image.GlideTools;
 
 @SuppressLint("ValidFragment")
 public class OptionDelegate extends QiluDelegate implements View.OnClickListener {
@@ -23,13 +38,14 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
     private TextView name;
     private TextView passWord;
     private TextView user_img;
-    private TextView honor;
-    private TextView about;
+
+    private UserDelegate userDelegate;
 
     @SuppressLint("ValidFragment")
-    public OptionDelegate(Context context, UserProfile_Data_Data data) {
+    public OptionDelegate(Context context, UserProfile_Data_Data data, UserDelegate userDelegate) {
         this.context = context;
         this.data = data;
+        this.userDelegate = userDelegate;
     }
 
     @Override
@@ -42,8 +58,6 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         name = rootView.findViewById(R.id.name);
         passWord = rootView.findViewById(R.id.passWord);
         user_img = rootView.findViewById(R.id.user_img);
-        honor = rootView.findViewById(R.id.edit_old_password);
-        about = rootView.findViewById(R.id.about);
         listenerRegister();
     }
 
@@ -51,8 +65,6 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         name.setOnClickListener(this);
         passWord.setOnClickListener(this);
         user_img.setOnClickListener(this);
-        honor.setOnClickListener(this);
-        about.setOnClickListener(this);
     }
 
     @Override
@@ -62,44 +74,45 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         } else if (v.getId() == R.id.passWord) {
             showPasswordDialog();
         } else if (v.getId() == R.id.user_img) {
-            // TODO 更改头像
             changeImg();
-        } else if (v.getId() == R.id.edit_old_password) {
-            showHonorDialog();
-        } else if (v.getId() == R.id.about) {
-            // TODO 关于（暂无页面）
-            showAbout();
         }
     }
 
-    private void showAbout() {
-
-    }
-
-    private void showHonorDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.honor_dialog, null, false);
-        dialog.setView(view);
-        EditText honor = view.findViewById(R.id.honor);
-        if (data != null && data.getSignature() != null && !data.getSignature().trim().equals(""))
-            honor.setText(data.getSignature());
-        dialog.setTitle("更改头衔");
-        dialog.setCancelable(true);
-        dialog.setPositiveButton("确定", (dialog1, which) -> {
-            String newHonor = String.valueOf(honor.getText());
-            // TODO 提交修改头衔
-
-            dialog1.dismiss();
-        });
-        dialog.setNegativeButton("取消", (dialog12, which) -> {
-            //关闭对话框
-            dialog12.dismiss();
-        });
-        dialog.show();
-    }
-
     private void changeImg() {
-        // TODO 更改头像操作
+        OptionDelegate temp = this;
+        CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
+            @Override
+            public void executeCallback(@Nullable Uri args) {
+                // args是照片保存在硬盘上的地址
+                if (args != null) {
+                    String img_1_path = args.getPath();
+                    uploadImg(img_1_path);
+                }
+            }
+        });
+        startCameraWithCheck();
+    }
+
+    /**
+     * 将路径img_path的图片上传
+     * @param img_path
+     */
+    private void uploadImg(String img_path) {
+        RestClient.builder()
+                .url("http://106.13.96.60:8888/user/28/update_avatar")
+                .loader(getContext())
+                .file("avatar",img_path)
+                .success(response -> {
+                    Gson gson = new Gson();
+                    UserInfo userInfo = gson.fromJson(response, UserInfo.class);
+                    int code = userInfo.getCode();    //TODO 感觉code一般应该一定是200
+                    if (code == 200) {
+                        Toast.makeText(getContext(), "更新成功", Toast.LENGTH_SHORT).show();
+                        userDelegate.onResume();
+                    }
+                })
+                .build()
+                .postWithFilesWithToken();
     }
 
     private void showPasswordDialog() {
@@ -115,9 +128,52 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
             String oldPassword = String.valueOf(edit_old_password.getText());
             String newPassword = String.valueOf(edit_new_password.getText());
             String surePassword = String.valueOf(edit_sure_password.getText());
-            // TODO 提交修改密码
-
-            dialog1.dismiss();
+            if (oldPassword == null || oldPassword.equals("") || newPassword == null || newPassword.equals("") || surePassword == null || surePassword.equals("")) {
+                Toast.makeText(dialog.getContext(), "输入框不能为空!", Toast.LENGTH_SHORT).show();
+                // TODO 输入框会自动消失，暂时不知道如何解决
+            } else if (!oldPassword.equals(QiluPreference.getCustomAppProfile("password"))) {
+                //原密码不对
+                AlertDialog.Builder dialog2 = new AlertDialog.Builder(getContext());
+                dialog2.setTitle("信息错误");
+                dialog2.setMessage("原密码不对!");
+                dialog2.setCancelable(true);
+                dialog2.setPositiveButton("确定", (dialog3, which1) -> {
+                    dialog3.dismiss();
+                });
+                dialog2.show();
+            } else if (!newPassword.equals(surePassword)) {
+                //新密码和确认新密码不对
+                AlertDialog.Builder dialog2 = new AlertDialog.Builder(getContext());
+                dialog2.setTitle("信息错误");
+                dialog2.setMessage("新密码确认错误!");
+                dialog2.setCancelable(true);
+                dialog2.setPositiveButton("确定", (dialog3, which1) -> {
+                    dialog3.dismiss();
+                });
+                dialog2.show();
+            } else {
+                Log.i("password", "changed");
+                RestClient.builder()
+                        .url("http://106.13.96.60:8888/account/update")
+                        .loader(getContext())
+                        .params("phone", QiluPreference.getCustomAppProfile("phone"))    //TODO 此处获取phone和password的方法不知道会不会产生Bug
+                        .params("password", newPassword)
+                        .params("name", data.getUserName())
+                        .params("signature", "")
+                        .success(response -> {
+                            Gson gson = new Gson();
+                            UserInfo userInfo = gson.fromJson(response, UserInfo.class);
+                            int code = userInfo.getCode();    //TODO 感觉code一般应该一定是200
+                            if (code == 200) {
+                                Toast.makeText(getContext(), "更新成功", Toast.LENGTH_SHORT).show();
+                                QiluPreference.addCustomAppProfile("password", newPassword);    // TODO 直接修改不知道会不会有Bug
+                                userDelegate.onResume();
+                                dialog1.dismiss();
+                            }
+                        })
+                        .build()
+                        .postRawWithToken();
+            }
         });
         dialog.setNegativeButton("取消", (dialog12, which) -> {
             //关闭对话框
@@ -136,18 +192,28 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         dialog.setTitle("修改昵称");
         //对话框设置可以用Back键退出
         dialog.setCancelable(true);
-        // dialog.clone()
-                /*
-                三种Button
-                Positive Button  正面按键
-                Negative Button  负面按键
-                Neutral Button   中性按键
-                 */
         dialog.setPositiveButton("确定", (dialog1, which) -> {
             //关闭对话框
             String newName = String.valueOf(name.getText());
             // TODO 提交修改昵称
-
+            RestClient.builder()
+                    .url("http://106.13.96.60:8888/account/update")
+                    .loader(getContext())
+                    .params("phone", QiluPreference.getCustomAppProfile("phone"))    //TODO 此处获取phone和password的方法不知道会不会产生Bug
+                    .params("password", QiluPreference.getCustomAppProfile("password"))
+                    .params("name", newName)
+                    .params("signature", "")
+                    .success(response -> {
+                        Gson gson = new Gson();
+                        UserInfo userInfo = gson.fromJson(response, UserInfo.class);
+                        int code = userInfo.getCode();    //TODO 感觉code一般应该一定是200
+                        if (code == 200) {
+                            Toast.makeText(getContext(), "更新成功", Toast.LENGTH_SHORT).show();
+                            userDelegate.onResume();
+                        }
+                    })
+                    .build()
+                    .postRawWithToken();
             dialog1.dismiss();
         });
         dialog.setNegativeButton("取消", (dialog12, which) -> {
