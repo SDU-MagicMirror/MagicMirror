@@ -116,6 +116,7 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
                     int code = exampleCreate.getCode();
                     if (code == 200) {
                         Toast.makeText(context, "成功！", Toast.LENGTH_SHORT).show();
+                        getSupportDelegate().pop();
                     }
                 })
                 .failure(() -> Toast.makeText(context, "Failure", Toast.LENGTH_SHORT).show())
