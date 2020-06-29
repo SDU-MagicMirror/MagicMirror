@@ -1,5 +1,6 @@
 package com.qilu.ec.main.example;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
@@ -21,11 +22,13 @@ import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.net.RestClient;
+import com.qilu.core.net.callback.IError;
 import com.qilu.core.util.storage.UserCollectionHelper;
 import com.qilu.ec.main.sample.ExampleItem;
 import com.qilu.ec.main.sample.example_list.ExampleResponse;
 import com.qilu.ec.main.sample.example_list.ExampleResponse_Data_Star;
 import com.qilu.ec.main.sample.user_info.UserInfo;
+import com.qilu.ec.sign.ISignListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,15 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
     private int mColumnCount = 1;
 
     private RecyclerView recyclerView;
+    private ISignListener mISignListener = null;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ISignListener) {
+            mISignListener = (ISignListener) activity;
+        }
+    }
 
     @Override
     public Object setLayout() {
@@ -89,11 +101,22 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
                 .success(response -> {
                     Gson gson = new Gson();
                     ExampleResponse exampleResponse = gson.fromJson(response, ExampleResponse.class);
-                    ExampleResponse_Data_Star[] stars = exampleResponse.getData().getStars();   //获得示例列表
-                    Log.i("初步获得的示例数量", String.valueOf(stars.length));
-                    ArrayList<ExampleItem> exampleItems=generateExampleItem(stars);    //获得用于加入adapter的列表
-                    Log.i("exampleItems最终的示例数量", String.valueOf(exampleItems.size()));
-                    recyclerView.setAdapter(new MyExampleRecyclerViewAdapter(getContext(), /*generateDatas()*/exampleItems));
+                    if (exampleResponse.getCode() == 401) {
+                        //Token失效
+                        mISignListener.onTokenExpired();
+                    } else {
+                        ExampleResponse_Data_Star[] stars = exampleResponse.getData().getStars();   //获得示例列表
+                        Log.i("初步获得的示例数量", String.valueOf(stars.length));
+                        ArrayList<ExampleItem> exampleItems = generateExampleItem(stars);    //获得用于加入adapter的列表
+                        Log.i("exampleItems最终的示例数量", String.valueOf(exampleItems.size()));
+                        recyclerView.setAdapter(new MyExampleRecyclerViewAdapter(getContext(), /*generateDatas()*/exampleItems));
+                    }
+                })
+                .error((code, msg) -> {
+                    if (code == 401) {
+                        //Token失效
+                        mISignListener.onTokenExpired();
+                    }
                 })
                 .build()
                 .getWithToken();
@@ -107,7 +130,7 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
     private ArrayList<ExampleItem> generateExampleItem(ExampleResponse_Data_Star[] stars) {
         UserCollectionHelper userCollectionHelper = new UserCollectionHelper(getContext());
         SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
-        ArrayList<ExampleItem> exampleItems=new ArrayList<ExampleItem>();
+        ArrayList<ExampleItem> exampleItems = new ArrayList<ExampleItem>();
         //查找
         Cursor cursor = db.query(UserCollectionHelper.TABLE_NAME, null, null, null, null, null, null);
         Log.i("本地数据库条数", String.valueOf(cursor.getCount()));
