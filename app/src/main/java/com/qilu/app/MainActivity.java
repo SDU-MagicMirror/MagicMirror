@@ -1,7 +1,10 @@
 package com.qilu.app;
 
 import android.Manifest;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.qilu.core.activities.ProxyActivity;
@@ -31,6 +34,10 @@ public class MainActivity extends ProxyActivity implements ISignListener,ILaunch
         Util.requestPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW);
         Util.requestPermission(this, Manifest.permission.RECORD_AUDIO);
         Util.requestPermission(this, Manifest.permission.WAKE_LOCK);
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.white));
     }
 
     @Override
