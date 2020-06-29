@@ -63,6 +63,7 @@ public class MainActivity extends ProxyActivity implements ISignListener,ILaunch
     @Override
     public void onTokenExpired() {
         AccountManager.setSignState("","","",false);
+        getSupportDelegate().pop();
         getSupportDelegate().startWithPop(new SignInDelegate());
     }
 
