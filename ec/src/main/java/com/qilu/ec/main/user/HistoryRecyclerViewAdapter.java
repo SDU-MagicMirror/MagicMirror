@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.ec.R;
+import com.qilu.ec.main.sample.DecorateHistory;
 import com.qilu.ec.main.util.Image;
 
 import org.w3c.dom.Text;
@@ -23,9 +25,9 @@ import java.util.List;
 
 public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder> implements View.OnClickListener {
     private Context context;
-    private List<String> mValues;
+    private List<DecorateHistory> mValues;
 
-    public HistoryRecyclerViewAdapter(Context context, List<String> mValues) {
+    public HistoryRecyclerViewAdapter(Context context, List<DecorateHistory> mValues) {
         this.context = context;
         this.mValues = mValues;
     }
@@ -40,9 +42,16 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String str = mValues.get(position);
-        Image.showResultImage(str, holder.imageView);
-        holder.button.setOnClickListener(this);
+        DecorateHistory decorateHistory = mValues.get(position);
+        holder.timeView.setText(decorateHistory.getTime());
+        Image.showResultImage(decorateHistory.getImg_base64(), holder.imageView);
+        holder.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Image.saveImageToGallery(context, Image.base64ToBitmap(decorateHistory.getImg_base64()));
+                Toast.makeText(context, "保存成功", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -59,11 +68,13 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imageView;
-        public IconTextView button;
+        TextView timeView;
+        ImageView imageView;
+        IconTextView button;
 
         public ViewHolder(View view) {
             super(view);
+            timeView = view.findViewById(R.id.time);
             imageView = view.findViewById(R.id.image);
             button = view.findViewById(R.id.button);
         }

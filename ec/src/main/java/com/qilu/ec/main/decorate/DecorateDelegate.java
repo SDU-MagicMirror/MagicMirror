@@ -2,7 +2,9 @@ package com.qilu.ec.main.decorate;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,11 +30,15 @@ import com.qilu.core.net.callback.ISuccess;
 import com.qilu.core.util.callback.CallbackManager;
 import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
+import com.qilu.core.util.storage.ImageHistoryHelper;
+import com.qilu.core.util.storage.UserCollectionHelper;
 import com.qilu.ec.main.util.Image;
 import com.qilu.ec.sign.ISignListener;
 import com.qilu.ui.image.GlideTools;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import hearsilent.discreteslider.DiscreteSlider;
 
@@ -219,12 +225,33 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     }
 
     /**
-     * TODO 将结果图放在本地缓存中
-     *
      * @param image 图片的Base64
+     * @return boolean
      */
-    private void saveHistory(@Nullable String image) {
+    private boolean saveHistory(@Nullable String image) {
+        ImageHistoryHelper imageHistoryHelper = new ImageHistoryHelper(getContext());
+        SQLiteDatabase db = imageHistoryHelper.getWritableDatabase();
+        String time = getTime();
+        ContentValues values = new ContentValues();
+        values.put(ImageHistoryHelper.IMAGE, image);
+        values.put(ImageHistoryHelper.TIME, time);
+        long result = db.insert(ImageHistoryHelper.TABLE_NAME, null, values);
+        if (result > 0) {
+            //增加成功
+            Log.i("历史记录", "增加");
+            return true;
+        } else {
+            Log.i("历史记录", "未增加");
+            return false;
+        }
+    }
 
+    private String getTime() {
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd :hh:mm:ss");
+        String time = dateFormat.format(date);
+        Log.i("美妆时间", time);
+        return time;
     }
 
     /**
@@ -254,7 +281,11 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
                             Image.showResultImage(response, img_result);
                             resultLayout.setVisibility(View.VISIBLE);
                             result_img_base64 = response;   //用于下载到本地
-                            saveHistory(response);
+                            if (saveHistory(response)) {
+                                Toast.makeText(getContext(), "美妆成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "记录出错...", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     })
                     .failure(new IFailure() {

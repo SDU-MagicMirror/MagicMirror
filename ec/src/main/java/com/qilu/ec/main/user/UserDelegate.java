@@ -117,7 +117,7 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
             getParentDelegate().getSupportDelegate().start(new StarDelegate());
         } else if (v.getId() == R.id.history) {
             //跳转到美妆历史
-            getParentDelegate().getSupportDelegate().start(new HistoryDelegate(getImageHistoryList()));
+            getParentDelegate().getSupportDelegate().start(new HistoryDelegate());
         } else if (v.getId() == R.id.upload) {
             //跳转到上传示例
             getParentDelegate().getSupportDelegate().start(new ExampleCreateDelegate());
