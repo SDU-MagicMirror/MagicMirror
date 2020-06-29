@@ -59,7 +59,7 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
                 //已收藏
                 int result = db.delete(UserCollectionHelper.TABLE_NAME, UserCollectionHelper.ID + "=?", new String[]{exampleItem.getId()});
                 if (result > 0) {
-                    //成功
+                    // 成功
                     ((IconTextView) v).setText(R.string.starToPlus);
                     exampleItem.setSaved(false);
                 }
@@ -81,10 +81,10 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
                 values.put(UserCollectionHelper.IMAGE, img_base64);
 
                 long result = db.insert(UserCollectionHelper.TABLE_NAME, null, values);
-                if (result != -1) {
-                    //更新成功
-                    Toast.makeText(context, "收藏成功！", Toast.LENGTH_SHORT).show();
+                if (result > 0) {
+                    // 成功
                     exampleItem.setSaved(true);
+                    Toast.makeText(context, "收藏成功！", Toast.LENGTH_SHORT).show();
                     ((IconTextView) v).setText(R.string.starPlused);
                 }
             }
