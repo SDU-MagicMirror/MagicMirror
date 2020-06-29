@@ -3,6 +3,7 @@ package com.qilu.ec.main.sample;
 import android.graphics.drawable.Drawable;
 
 public class CommentItem {
+    private String id;
     private Drawable user_img;
     private String name;
     private String content;
@@ -11,23 +12,21 @@ public class CommentItem {
 //    private int commentNum;
 //    private int likeNum;
 
-    public CommentItem(Drawable user_img, String name, String content, String time) {
+    public CommentItem(String id, Drawable user_img, String name, String content, String time) {
+        this.id = id;
         this.user_img = user_img;
         this.name = name;
         this.content = content;
         this.time = time;
     }
 
-    /**
-     * 后台自动生成时间
-     * @param user_img
-     * @param name
-     * @param content
-    public CommentItem(Drawable user_img, String name, String content) {
-        this.user_img = user_img;
-        this.name = name;
-        this.content = content;
-    }*/
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Drawable getUser_img() {
         return user_img;

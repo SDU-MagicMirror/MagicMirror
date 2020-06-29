@@ -32,8 +32,10 @@ import com.qilu.core.util.callback.CallbackManager;
 import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
 import com.qilu.core.util.storage.QiluPreference;
+import com.qilu.ec.main.util.Image;
 import com.qilu.ec.sign.ISignListener;
 import com.qilu.ui.image.GlideTools;
+
 import hearsilent.discreteslider.DiscreteSlider;
 
 @SuppressLint("ValidFragment")
@@ -127,14 +129,14 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
             } else {
                 if (!isChecked) {
                     //false时，只有当为最后一个选中时不可执行
-                    if (buttonView.getId()==check_1.getId()){
-                        if (!check_2.isChecked()&&!check_3.isChecked())
+                    if (buttonView.getId() == check_1.getId()) {
+                        if (!check_2.isChecked() && !check_3.isChecked())
                             buttonView.setChecked(true);
-                    }else if (buttonView.getId()==check_2.getId()){
-                        if (!check_1.isChecked()&&!check_3.isChecked())
+                    } else if (buttonView.getId() == check_2.getId()) {
+                        if (!check_1.isChecked() && !check_3.isChecked())
                             buttonView.setChecked(true);
-                    }else if (buttonView.getId()==check_3.getId()){
-                        if (!check_1.isChecked()&&!check_2.isChecked())
+                    } else if (buttonView.getId() == check_3.getId()) {
+                        if (!check_1.isChecked() && !check_2.isChecked())
                             buttonView.setChecked(true);
                     }
                 } else {
@@ -230,56 +232,51 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     }
 
     /**
-     * 结果图显示到屏幕上
+     * TODO 将结果图放在本地缓存中
+     *
+     * @param image 图片的Base64
      */
-    private void showResultImage(@Nullable String base64Str) {
-        if(base64Str!=null&&(!base64Str.isEmpty())){
-            byte[] bytes = Base64.decode(base64Str, Base64.DEFAULT);
-            Bitmap bitmap =  BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            img_result.setImageBitmap(bitmap);
+    private void saveHistory(@Nullable String image) {
 
-            //自动缩放
-            img_result.setScaleType(ImageView.ScaleType.FIT_XY);
-            img_result.setAdjustViewBounds(true);
-            resultLayout.setVisibility(View.VISIBLE);
-        }
     }
 
     /**
      * 发送网络请求端,返回类型不确定，可能是图片相关类型
      */
     private void sendRequest(@Nullable String image1Path, @Nullable String image2Path, int levelDegree, String[] paramsValues) {
-        if(image1Path!=null&&(!image1Path.isEmpty())&&image2Path!=null&&(!image2Path.isEmpty())){
+        if (image1Path != null && (!image1Path.isEmpty()) && image2Path != null && (!image2Path.isEmpty())) {
             // levelDegree: [0, 99]
-            levelDegree+=1;
-            float shade = ((float)levelDegree)/100.0f;
+            levelDegree += 1;
+            float shade = ((float) levelDegree) / 100.0f;
             String[] paramsNames = {"local_flag", "eye_flag", "lip_flag", "face_flag"};
 
             RestClient.builder()
                     .url("/generate_makeup")
                     .file("example_image", image1Path)
                     .file("user_image", image2Path)
-                    .params("shade_alpha",String.valueOf(shade))
-                    .params(paramsNames[0],paramsValues[0])
+                    .params("shade_alpha", String.valueOf(shade))
+                    .params(paramsNames[0], paramsValues[0])
                     .params(paramsNames[1], paramsValues[1])
                     .params(paramsNames[2], paramsValues[2])
                     .params(paramsNames[3], paramsValues[3])
                     .success(new ISuccess() {
                         @Override
                         public void onSuccess(String response) {
-                            showResultImage(response);
+                            Image.showResultImage(response, img_result);
+                            resultLayout.setVisibility(View.VISIBLE);
+                            saveHistory(response);
                         }
                     })
                     .failure(new IFailure() {
                         @Override
                         public void onFailure() {
-                            Toast.makeText(getContext(),"请求失败",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "请求失败", Toast.LENGTH_LONG).show();
                         }
                     })
                     .error(new IError() {
                         @Override
                         public void onError(int code, String msg) {
-                            Toast.makeText(getContext(),"请求出错，Msg："+msg+"\n"+"Code："+code,Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "请求出错，Msg：" + msg + "\n" + "Code：" + code, Toast.LENGTH_LONG).show();
                         }
                     })
                     .loader(getContext())
@@ -289,13 +286,12 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     }
 
     private String[] getType() {
-        String[] paramsValues = {"0","0","0","0"};
+        String[] paramsValues = {"0", "0", "0", "0"};
         if (radioButton.isChecked())
             return paramsValues;
-        else if (radioButton_2.isChecked())
-        {
+        else if (radioButton_2.isChecked()) {
             paramsValues[0] = "1";
-            if (check_1.isChecked()){
+            if (check_1.isChecked()) {
                 paramsValues[1] = "1";
             }
             if (check_2.isChecked())

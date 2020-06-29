@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.google.android.flexbox.FlexboxLayout;
 import com.qilu.core.delegates.QiluDelegate;
-import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.ec.main.sample.CommentItem;
 import com.zyyoona7.popup.EasyPopup;
@@ -91,7 +90,7 @@ public class CommentDelegate extends QiluDelegate implements View.OnClickListene
         Date date = new Date(System.currentTimeMillis());
         List<CommentItem> commentItems = new ArrayList<CommentItem>();
         for (int i = 0; i < 10; i++) {
-            commentItems.add(new CommentItem(user_example, "name" + i, "contentTestcontentTestcontentTestcontentTestcontentTestcontentTest" + i, simpleDateFormat.format(date)));
+            commentItems.add(new CommentItem(String.valueOf(i),user_example, "name" + i, "contentTestcontentTestcontentTestcontentTestcontentTestcontentTest" + i, simpleDateFormat.format(date)));
         }
         return commentItems;
     }
