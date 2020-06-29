@@ -13,25 +13,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.qilu.core.delegates.QiluDelegate;
-import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.net.RestClient;
 import com.qilu.core.util.callback.CallbackManager;
 import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
 import com.qilu.core.util.storage.QiluPreference;
-import com.qilu.ec.main.decorate.DecorateDelegate;
 import com.qilu.ec.main.sample.user_info.UserInfo;
 import com.qilu.ec.main.sample.user_profile.UserProfile_Data_Data;
 import com.qilu.ec.main.user.UserDelegate;
 import com.qilu.ec.sign.ISignListener;
-import com.qilu.ui.image.GlideTools;
 
 import java.util.Objects;
 
