@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -80,6 +81,7 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
                         .show();
             } else if (img_1_path != null && !img_1_path.equals("")) { //图片路径不为空
                 //TODO 图片处理
+                Log.i("img_path",img_1_path);
                 uploadExample(getContext(), text, img_1_path);
             } else {
                 new AlertDialog.Builder(Objects.requireNonNull(getContext()))

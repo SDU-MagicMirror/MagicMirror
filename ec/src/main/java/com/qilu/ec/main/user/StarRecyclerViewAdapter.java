@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.ec.R;
 import com.qilu.ec.main.sample.ExampleItem;
+import com.qilu.ec.main.util.Image;
 
 import java.util.List;
 
@@ -37,8 +38,9 @@ public class StarRecyclerViewAdapter extends RecyclerView.Adapter<StarRecyclerVi
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         ExampleItem exampleItem = mValues.get(position);
-        holder.textView.setText(exampleItem.getItemNumber());
-        holder.imageView.setImageDrawable(exampleItem.getImage());
+        holder.textView.setText(exampleItem.getContent());
+//        holder.imageView.setImageDrawable(exampleItem.getImage());
+        Image.showResultImage(exampleItem.getImage(), holder.imageView);
         holder.isSaved = exampleItem.getSaved();
         // TODO 取消收藏功能（暂时不做）
         /*if (holder.isSaved){

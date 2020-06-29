@@ -1,6 +1,7 @@
 package com.qilu.core.util.storage;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
@@ -30,4 +31,8 @@ public class UserCollectionHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+
+    public void getAllData(){
+
+    }
 }

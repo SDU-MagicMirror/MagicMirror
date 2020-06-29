@@ -7,8 +7,9 @@ import android.graphics.drawable.Drawable;
  */
 public class ExampleItem {
     private String id;
-    private String itemNumber;
-    private Drawable image;
+    private String content;
+    //    private Drawable image;
+    private String image;
     private Boolean isSaved;
 
     public Boolean getSaved() {
@@ -19,9 +20,12 @@ public class ExampleItem {
         this.isSaved = isSaved;
     }
 
-    public ExampleItem(String id, String itemNumber, Drawable image, Boolean isSaved) {
+    public ExampleItem() {
+    }
+
+    public ExampleItem(String id, String content, /*Drawable*/String image, Boolean isSaved) {
         this.id = id;
-        this.itemNumber = itemNumber;
+        this.content = content;
         this.image = image;
         this.isSaved = isSaved;
     }
@@ -34,19 +38,19 @@ public class ExampleItem {
         this.id = id;
     }
 
-    public String getItemNumber() {
-        return itemNumber;
+    public String getContent() {
+        return content;
     }
 
-    public void setItemNumber(String itemNumber) {
-        this.itemNumber = itemNumber;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public Drawable getImage() {
+    public /*Drawable*/String getImage() {
         return image;
     }
 
-    public void setImage(Drawable image) {
+    public void setImage(/*Drawable*/String image) {
         this.image = image;
     }
 }

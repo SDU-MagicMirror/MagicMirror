@@ -16,6 +16,7 @@ import com.qilu.core.delegates.QiluDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.ec.main.example.MyExampleRecyclerViewAdapter;
 import com.qilu.ec.main.sample.ExampleItem;
+import com.qilu.ec.main.util.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,10 +55,10 @@ public class StarDelegate extends QiluDelegate {
         Resources resources = getContext().getResources();
         Drawable user_example = resources.getDrawable(R.drawable.user_example);
         Drawable female = resources.getDrawable(R.drawable.female);
-
+        String female_base64= Image.BitmapToStrByBase64(Image.drawableToBitmap(female));
         List<ExampleItem> exampleItems = new ArrayList<ExampleItem>();
         for (int i = 0; i < 4; i++) {
-            ExampleItem exampleItem = new ExampleItem(String.valueOf(i), "内容" + (i + 1), female, true);
+            ExampleItem exampleItem = new ExampleItem(String.valueOf(i), "内容" + (i + 1), female_base64, true);
             exampleItems.add(exampleItem);
         }
         return exampleItems;
