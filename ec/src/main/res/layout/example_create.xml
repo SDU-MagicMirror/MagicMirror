@@ -65,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:gravity="top|left"
-                android:hint="描述..."
+                android:hint="描述（不超过20字）……"
+                android:maxLength="20"
                 android:padding="@dimen/text_margin"
                 android:textColorHint="@color/gray" />
 
