@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
             SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
             if (exampleItem.getSaved()) {
                 //已收藏
+                Log.i("是否收藏", "是->否");
                 int result = db.delete(UserCollectionHelper.TABLE_NAME, UserCollectionHelper.ID + "=?", new String[]{exampleItem.getId()});
                 if (result > 0) {
                     // 成功
@@ -65,6 +67,7 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
                 }
             } else {
                 //未收藏
+                Log.i("是否收藏", "否->是");
                 String id = exampleItem.getId();
                 String content = exampleItem.getContent();
                 //假设接口的图片是Base64字符串
@@ -86,6 +89,7 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
                     exampleItem.setSaved(true);
                     Toast.makeText(context, "收藏成功！", Toast.LENGTH_SHORT).show();
                     ((IconTextView) v).setText(R.string.starPlused);
+                    exampleItem.setSaved(true);
                 }
             }
         });
