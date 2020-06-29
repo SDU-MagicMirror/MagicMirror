@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MagicMirrorEC</string>
+    <string name="app_name">试妆魔镜EC</string>
     <string name="about_app">  张峰玮开发  </string>
 
     <string name="starToPlus">{fa-heart-o}收藏</string>
