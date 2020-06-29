@@ -30,9 +30,8 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
     @SuppressWarnings("NullableProblems")
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_example, parent, false);
-        return new ViewHolder(view/*, context*/);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_example, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -43,6 +42,9 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
         holder.isSaved = exampleItem.getSaved();
         if (holder.isSaved){
             holder.buttonView.setText(R.string.starPlused);
+        }
+        else{
+            holder.buttonView.setText(R.string.starToPlus);
         }
         holder.buttonView.setOnClickListener(this);
     }
@@ -57,21 +59,19 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
 
     @Override
     public void onClick(View v) {
-        //只有一个控件监听，不用设if判断
-        IconTextView buttonView = v.findViewById(R.id.button);
-        buttonView.setText(R.string.starPlused);
         // TODO 将id,图和文字三个数据放到一个数据对象json存到本地缓存文件中，json对象可以沿用sample.ExampleItem类（将其中的Drawable改为String即可）
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        public View view;
         public IconTextView buttonView;
         public TextView textView;
         public ImageView imageView;
         public Boolean isSaved;
 
-        public ViewHolder(View view/*, Context context*/) {
+        public ViewHolder(View view) {
             super(view);
-            //mView = view;
+            this.view=view;
             buttonView = view.findViewById(R.id.button);
             textView = (TextView) view.findViewById(R.id.text_content);
             imageView = (ImageView) view.findViewById(R.id.image);
