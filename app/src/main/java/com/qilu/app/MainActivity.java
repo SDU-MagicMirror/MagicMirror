@@ -30,7 +30,6 @@ public class MainActivity extends ProxyActivity implements ISignListener,ILaunch
         super.onCreate(savedInstanceState);
         Util.requestPermission(this, Manifest.permission.ACCESS_NETWORK_STATE);
         Util.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        Util.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         Util.requestPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW);
         Util.requestPermission(this, Manifest.permission.WAKE_LOCK);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
