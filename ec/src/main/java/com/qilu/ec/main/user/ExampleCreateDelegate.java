@@ -1,5 +1,6 @@
 package com.qilu.ec.main.user;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.qilu.core.util.callback.CallbackManager;
 import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
 import com.qilu.ec.main.sample.example_create.ExampleCreate;
+import com.qilu.ec.sign.ISignListener;
 import com.qilu.ui.image.GlideTools;
 
 import java.util.Objects;
@@ -37,6 +39,15 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
 
     private String text;//文本内容
     private String img_1_path;//图片路径
+    private ISignListener mISignListener = null;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ISignListener) {
+            mISignListener = (ISignListener) activity;
+        }
+    }
 
     @Override
     public Object setLayout() {
@@ -70,8 +81,7 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
                 }
             });
             startCameraWithCheck();
-        }
-        else if (v.getId() == R.id.button) {
+        } else if (v.getId() == R.id.button) {
             text = String.valueOf(editText.getText());
             if (text == null || text.trim().equals("")) {
                 new AlertDialog.Builder(Objects.requireNonNull(getContext()))
@@ -79,13 +89,11 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
                         .setMessage("描述不可为空")
                         .setPositiveButton("确定", null)
                         .show();
-            }
-            else if (img_1_path != null && !img_1_path.equals("")) { //图片路径不为空
+            } else if (img_1_path != null && !img_1_path.equals("")) { //图片路径不为空
                 //TODO 图片处理
-                Log.i("img_path",img_1_path);
+                Log.i("img_path", img_1_path);
                 uploadExample(getContext(), text, img_1_path);
-            }
-            else {
+            } else {
                 new AlertDialog.Builder(Objects.requireNonNull(getContext()))
                         .setTitle("错误")
                         .setMessage("图片不可为空")
@@ -93,8 +101,7 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
                         .show();
             }
             Toast.makeText(getContext(), "假装上传", Toast.LENGTH_SHORT).show();
-        }
-        else if (v.getId() == R.id.only_img) {
+        } else if (v.getId() == R.id.only_img) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(null);
             builder.setMessage("确定移除？");
@@ -120,13 +127,22 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
                     Gson gson = new Gson();
                     ExampleCreate exampleCreate = gson.fromJson(response, ExampleCreate.class);
                     int code = exampleCreate.getCode();
-                    if (code == 200) {
+                    if (code == 401) {
+                        mISignListener.onTokenExpired();
+                    } else if (code == 200) {
                         Toast.makeText(context, "成功！", Toast.LENGTH_SHORT).show();
                         getSupportDelegate().pop();
                     }
                 })
                 .failure(() -> Toast.makeText(context, "Failure", Toast.LENGTH_SHORT).show())
-                .error((code, msg) -> Toast.makeText(context, "Error! Msg: " + msg+" Code: "+code, Toast.LENGTH_SHORT).show())
+                .error((code, msg) -> {
+                    if (code == 401) {
+                        //Token失效
+                        mISignListener.onTokenExpired();
+                    } else {
+                        Toast.makeText(context, "Error! Msg: " + msg + " Code: " + code, Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .build()
                 .postWithFilesWithToken();
     }

@@ -1,6 +1,7 @@
 package com.qilu.ec.main.option;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.qilu.ec.main.decorate.DecorateDelegate;
 import com.qilu.ec.main.sample.user_info.UserInfo;
 import com.qilu.ec.main.sample.user_profile.UserProfile_Data_Data;
 import com.qilu.ec.main.user.UserDelegate;
+import com.qilu.ec.sign.ISignListener;
 import com.qilu.ui.image.GlideTools;
 
 @SuppressLint("ValidFragment")
@@ -40,6 +42,15 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
     private TextView user_img;
 
     private UserDelegate userDelegate;
+    private ISignListener mISignListener = null;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ISignListener) {
+            mISignListener = (ISignListener) activity;
+        }
+    }
 
     @SuppressLint("ValidFragment")
     public OptionDelegate(Context context, UserProfile_Data_Data data, UserDelegate userDelegate) {
@@ -95,20 +106,29 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
 
     /**
      * 将路径img_path的图片上传
+     *
      * @param img_path
      */
     private void uploadImg(String img_path) {
         RestClient.builder()
                 .url("http://106.13.96.60:8888/user/28/update_avatar")
                 .loader(getContext())
-                .file("avatar",img_path)
+                .file("avatar", img_path)
                 .success(response -> {
                     Gson gson = new Gson();
                     UserInfo userInfo = gson.fromJson(response, UserInfo.class);
-                    int code = userInfo.getCode();    //TODO 感觉code一般应该一定是200
-                    if (code == 200) {
+                    int code = userInfo.getCode();
+                    if (code == 401) {
+                        mISignListener.onTokenExpired();
+                    } else if (code == 200) {              //TODO 感觉code一般应该一定是200
                         Toast.makeText(getContext(), "更新成功", Toast.LENGTH_SHORT).show();
                         userDelegate.onResume();
+                    }
+                })
+                .error((code, msg) -> {
+                    if (code == 401) {
+                        //Token失效
+                        mISignListener.onTokenExpired();
                     }
                 })
                 .build()
@@ -163,12 +183,21 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
                         .success(response -> {
                             Gson gson = new Gson();
                             UserInfo userInfo = gson.fromJson(response, UserInfo.class);
-                            int code = userInfo.getCode();    //TODO 感觉code一般应该一定是200
-                            if (code == 200) {
+                            int code = userInfo.getCode();
+                            if (code == 401) {
+                                mISignListener.onTokenExpired();
+                            }
+                            if (code == 200) {    //TODO 感觉code一般应该一定是200
                                 Toast.makeText(getContext(), "更新成功", Toast.LENGTH_SHORT).show();
                                 QiluPreference.addCustomAppProfile("password", newPassword);    // TODO 直接修改不知道会不会有Bug
                                 userDelegate.onResume();
                                 dialog1.dismiss();
+                            }
+                        })
+                        .error((code, msg) -> {
+                            if (code == 401) {
+                                //Token失效
+                                mISignListener.onTokenExpired();
                             }
                         })
                         .build()
@@ -206,10 +235,18 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
                     .success(response -> {
                         Gson gson = new Gson();
                         UserInfo userInfo = gson.fromJson(response, UserInfo.class);
-                        int code = userInfo.getCode();    //TODO 感觉code一般应该一定是200
-                        if (code == 200) {
+                        int code = userInfo.getCode();
+                        if (code == 401) {
+                            mISignListener.onTokenExpired();
+                        } else if (code == 200) {    //TODO 感觉code一般应该一定是200
                             Toast.makeText(getContext(), "更新成功", Toast.LENGTH_SHORT).show();
                             userDelegate.onResume();
+                        }
+                    })
+                    .error((code, msg) -> {
+                        if (code == 401) {
+                            //Token失效
+                            mISignListener.onTokenExpired();
                         }
                     })
                     .build()
