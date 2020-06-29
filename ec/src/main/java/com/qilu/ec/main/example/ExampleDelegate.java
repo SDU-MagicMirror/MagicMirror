@@ -48,7 +48,6 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
         View view = rootView;
         recyclerView = view.findViewById(R.id.list);
-        // TODO 网络请求方法代替generateDatas
         if (recyclerView != null) {
             Context context = view.getContext();
 //            RecyclerView recyclerView = (RecyclerView) view;
@@ -173,9 +172,6 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
     public void onClick(View v) {
         if (v.getId() == R.id.refresh) {
             //刷新界面
-            // TODO 重新请求网络，需要和刚进入页面时用到同样的网络请求方法代替上面的generateDatas
-//            Toast.makeText(getContext(), "刷新占位符", Toast.LENGTH_SHORT).show();
-            //请求数据
             requestDatas();
         }
     }
