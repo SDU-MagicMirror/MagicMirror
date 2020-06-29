@@ -3,13 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/MagicMirror.iml" filepath="$PROJECT_DIR$/.idea/MagicMirror.iml" group="MagicMirror" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/annotations/MagicMirror-annotations.iml" filepath="$PROJECT_DIR$/.idea/modules/annotations/MagicMirror-annotations.iml" group="MagicMirror/annotations" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MagicMirror-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MagicMirror-app.iml" group="MagicMirror/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/compiler/MagicMirror-compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/compiler/MagicMirror-compiler.iml" group="MagicMirror/compiler" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/MagicMirror-core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/MagicMirror-core.iml" group="MagicMirror/core" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ec/MagicMirror-ec.iml" filepath="$PROJECT_DIR$/.idea/modules/ec/MagicMirror-ec.iml" group="MagicMirror/ec" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ui/MagicMirror-ui.iml" filepath="$PROJECT_DIR$/.idea/modules/ui/MagicMirror-ui.iml" group="MagicMirror/ui" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android_workplace-MagicMirror.iml" filepath="$PROJECT_DIR$/.idea/modules/android_workplace-MagicMirror.iml" group="MagicMirror" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/annotations/annotations.iml" filepath="$PROJECT_DIR$/.idea/modules/annotations/annotations.iml" group="MagicMirror/annotations" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="MagicMirror/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/compiler/compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/compiler/compiler.iml" group="MagicMirror/compiler" />

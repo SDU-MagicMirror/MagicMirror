@@ -81,7 +81,8 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
                 }
             });
             startCameraWithCheck();
-        } else if (v.getId() == R.id.button) {
+        }
+        else if (v.getId() == R.id.button) {
             text = String.valueOf(editText.getText());
             if (text == null || text.trim().equals("")) {
                 new AlertDialog.Builder(Objects.requireNonNull(getContext()))
@@ -89,11 +90,13 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
                         .setMessage("描述不可为空")
                         .setPositiveButton("确定", null)
                         .show();
-            } else if (img_1_path != null && !img_1_path.equals("")) { //图片路径不为空
+            }
+            else if (img_1_path != null && !img_1_path.equals("")) { //图片路径不为空
                 //TODO 图片处理
                 Log.i("img_path", img_1_path);
                 uploadExample(getContext(), text, img_1_path);
-            } else {
+            }
+            else {
                 new AlertDialog.Builder(Objects.requireNonNull(getContext()))
                         .setTitle("错误")
                         .setMessage("图片不可为空")
@@ -101,7 +104,8 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
                         .show();
             }
             Toast.makeText(getContext(), "假装上传", Toast.LENGTH_SHORT).show();
-        } else if (v.getId() == R.id.only_img) {
+        }
+        else if (v.getId() == R.id.only_img) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(null);
             builder.setMessage("确定移除？");
