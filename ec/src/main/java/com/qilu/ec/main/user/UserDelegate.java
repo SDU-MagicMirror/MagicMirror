@@ -71,11 +71,8 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
         star = rootView.findViewById(R.id.star);
         history = rootView.findViewById(R.id.history);
         upload = rootView.findViewById(R.id.upload);
-        // TODO 点击star跳转到示例收藏
         star.setOnClickListener(this);
-        // TODO 点击history跳转到美妆历史
         history.setOnClickListener(this);
-        // TODO 点击upload跳转到上传示例
         upload.setOnClickListener(this);
         RestClient.builder()
                 .url("/account")
@@ -126,11 +123,6 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
 
     private void changeToOption() {
         getParentDelegate().getSupportDelegate().start(new OptionDelegate(context, data, this));
-    }
-
-    private List<String> getImageHistoryList() {
-        // TODO 从本地获取图片和时间列表，传入adapter中
-        return null;
     }
 
     @Override

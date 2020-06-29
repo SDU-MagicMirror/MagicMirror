@@ -91,10 +91,8 @@ public class Image {
             int length = in.read(bytes);
             base64 = Base64.encodeToString(bytes, 0, length, Base64.DEFAULT);
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
             try {
@@ -102,7 +100,6 @@ public class Image {
                     in.close();
                 }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -151,7 +148,6 @@ public class Image {
                     out.close();
                 }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

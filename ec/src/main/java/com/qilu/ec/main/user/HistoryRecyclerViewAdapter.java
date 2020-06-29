@@ -23,7 +23,7 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder> implements View.OnClickListener {
+public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder>{
     private Context context;
     private List<DecorateHistory> mValues;
 
@@ -60,11 +60,6 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
             return mValues.size();
         else
             return 0;
-    }
-
-    @Override
-    public void onClick(View v) {
-        // TODO 将结果图片（重新）下到本地，之前用过这个方法，复制粘贴即可
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
