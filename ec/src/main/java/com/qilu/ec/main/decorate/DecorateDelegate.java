@@ -244,7 +244,7 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
             String[] paramsNames = {"local_flag", "eye_flag", "lip_flag", "face_flag"};
 
             RestClient.builder()
-                    .url("http://10.211.55.4:5000/generate_makeup")
+                    .url("/generate_makeup")
                     .file("example_image", image1Path)
                     .file("user_image", image2Path)
                     .params("shade_alpha", String.valueOf(shade))

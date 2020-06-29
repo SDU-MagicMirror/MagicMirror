@@ -30,7 +30,7 @@ public class MainApp extends Application {
                 .withIcon(new SimpleLineIconsModule())
                 .withIcon(new IoniconsModule())
                 .withApiHost("http://106.13.96.60:8888/")
-                .withLoaderDelayed(1000)
+                .withLoaderDelayed(3000)
                 .configure();
         QiluPreference.addCustomAppProfile("apiHost","http://106.13.96.60:8888/");
 

@@ -69,7 +69,8 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
                 }
             });
             startCameraWithCheck();
-        } else if (v.getId() == R.id.button) {
+        }
+        else if (v.getId() == R.id.button) {
             text = String.valueOf(editText.getText());
             if (text == null || text.trim().equals("")) {
                 new AlertDialog.Builder(Objects.requireNonNull(getContext()))
@@ -105,7 +106,7 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
 
     private void uploadExample(Context context, String text, String img_path) {
         RestClient.builder()
-                .url("http://106.13.96.60:8888/star/publish")
+                .url("/star/publish")
                 .file("images", img_path)
                 .params("content", text)
                 .loader(context)
@@ -120,7 +121,7 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
                     }
                 })
                 .failure(() -> Toast.makeText(context, "Failure", Toast.LENGTH_SHORT).show())
-                .error((code, msg) -> Toast.makeText(context, "Error: " + msg, Toast.LENGTH_SHORT).show())
+                .error((code, msg) -> Toast.makeText(context, "Error! Msg: " + msg+" Code: "+code, Toast.LENGTH_SHORT).show())
                 .build()
                 .postWithFilesWithToken();
     }
