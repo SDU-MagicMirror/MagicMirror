@@ -25,7 +25,6 @@ public class MainActivity extends ProxyActivity implements ISignListener,ILaunch
         return new LauncherDelegate();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +33,12 @@ public class MainActivity extends ProxyActivity implements ISignListener,ILaunch
         Util.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         Util.requestPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW);
         Util.requestPermission(this, Manifest.permission.WAKE_LOCK);
-        Window window = this.getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.colorECampus));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = this.getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.colorECampus));
+        }
     }
 
     @Override
