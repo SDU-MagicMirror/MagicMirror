@@ -44,7 +44,7 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
         ExampleItem exampleItem = mValues.get(position);
         holder.textView.setText(exampleItem.getContent());
 //        holder.imageView.setImageDrawable(exampleItem.getImage());
-        Image.showResultImage(exampleItem.getImage(),holder.imageView);
+        Image.showResultImage(exampleItem.getImage(), holder.imageView);
         holder.isSaved = exampleItem.getSaved();
         if (holder.isSaved) {
             holder.buttonView.setText(R.string.starPlused);
@@ -55,8 +55,13 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
             //只有buttonView监听click
             if (exampleItem.getSaved()) {
                 //已收藏
-                // TODO 取消收藏
-                ((IconTextView)v).setText(R.string.starToPlus);
+                UserCollectionHelper userCollectionHelper = new UserCollectionHelper(context);
+                SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
+                int result = db.delete(UserCollectionHelper.TABLE_NAME, UserCollectionHelper.ID + "=?", new String[]{exampleItem.getId()});
+                if (result > 0) {
+                    //成功
+                    ((IconTextView) v).setText(R.string.starToPlus);
+                }
             } else {
                 //未收藏
                 String id = exampleItem.getId();
@@ -66,7 +71,7 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
                 //如果get返回的是Drawable
                 //img_base64 = Image.BitmapToStrByBase64(Image.drawableToBitmap(exampleItem.getImage()));
                 //如果get返回的是Base64的String
-                img_base64=exampleItem.getImage();
+                img_base64 = exampleItem.getImage();
                 // 示例
                 UserCollectionHelper userCollectionHelper = new UserCollectionHelper(context);
                 SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
@@ -80,7 +85,7 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
                 if (result != -1) {
                     //更新成功
                     Toast.makeText(context, "收藏成功！", Toast.LENGTH_SHORT).show();
-                    ((IconTextView)v).setText(R.string.starPlused);
+                    ((IconTextView) v).setText(R.string.starPlused);
                 }
             }
         });
