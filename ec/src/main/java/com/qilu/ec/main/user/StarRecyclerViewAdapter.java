@@ -49,8 +49,7 @@ public class StarRecyclerViewAdapter extends RecyclerView.Adapter<StarRecyclerVi
         holder.buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO 转入界面后无法退到原fragment，未解决
-                starDelegate.getSupportDelegate().start(new DecorateDelegate(exampleItem.getImage()));
+                starDelegate.getSupportDelegate().start(new DecorateFromStarDelegate(exampleItem.getImage()));
             }
         });
     }

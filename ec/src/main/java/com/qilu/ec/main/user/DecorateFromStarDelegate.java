@@ -1,8 +1,7 @@
-package com.qilu.ec.main.decorate;
+package com.qilu.ec.main.user;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconTextView;
+import com.qilu.core.delegates.QiluDelegate;
 import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.net.RestClient;
@@ -37,8 +37,7 @@ import java.io.File;
 import hearsilent.discreteslider.DiscreteSlider;
 
 @SuppressLint("ValidFragment")
-public class DecorateDelegate extends BottomItemDelegate implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
-    private IconTextView button_1;
+public class DecorateFromStarDelegate extends QiluDelegate implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private IconTextView button_2;
     private ImageView img;
     private ImageView img_2;
@@ -61,6 +60,21 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     //保存待上传图片路径的字符串
     private String img_1_path = null;
     private String img_2_path = null;
+    private String img1_base64;
+
+    private ISignListener mISignListener = null;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ISignListener) {
+            mISignListener = (ISignListener) activity;
+        }
+    }
+
+    public DecorateFromStarDelegate(String img_Base64) {
+        this.img1_base64 = img_Base64;
+    }
 
     @Override
     public Object setLayout() {
@@ -71,7 +85,6 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
         View view = rootView;
-        button_1 = view.findViewById(R.id.button_1);
         button_2 = view.findViewById(R.id.button_2);
         img = view.findViewById(R.id.img);
         img_2 = view.findViewById(R.id.img_2);
@@ -94,6 +107,16 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
         resultLayout.setVisibility(View.INVISIBLE);
 
         listenerRegister();
+        checkToShowImg1();
+    }
+
+    private void checkToShowImg1() {
+        File file = Image.base64ToFile(img1_base64);  //获取临时文件路径
+        String path = file.getAbsolutePath();
+        Log.i("文件路径", file.getAbsolutePath());
+        img_1_path = path;
+        DecorateFromStarDelegate temp = this;
+        GlideTools.showImagewithGlide(temp, img_1_path, (ImageView) $(R.id.img));
     }
 
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
@@ -123,7 +146,6 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     };
 
     private void listenerRegister() {
-        button_1.setOnClickListener(this);
         button_2.setOnClickListener(this);
         submit.setOnClickListener(this);
         radio_group.setOnCheckedChangeListener(this);
@@ -137,27 +159,11 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     public void onClick(View v) {
         int id = v.getId();
 
-        if (id == R.id.button_1) {
-//            position = POSITION_ONE;
-            // 设置拍照后的动作
-            DecorateDelegate temp = this;
-            CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
-                @Override
-                public void executeCallback(@Nullable Uri args) {
-                    // args是照片保存在硬盘上的地址
-                    if (args != null) {
-                        img_1_path = args.getPath();
-                        GlideTools.showImagewithGlide(temp, img_1_path, (ImageView) $(R.id.img));
-                    }
-                }
-            });
-            startCameraWithCheck();
-
-        } else if (id == R.id.button_2) {
+        if (id == R.id.button_2) {
 //            position = POSITION_TWO;
 
             // 设置拍照后的动作
-            DecorateDelegate temp = this;
+            DecorateFromStarDelegate temp = this;
             CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
                 @Override
                 public void executeCallback(@Nullable Uri args) {
