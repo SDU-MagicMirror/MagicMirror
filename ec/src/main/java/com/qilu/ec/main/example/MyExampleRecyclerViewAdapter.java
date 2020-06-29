@@ -1,6 +1,5 @@
 package com.qilu.ec.main.example;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.ec.R;
 import com.qilu.ec.main.sample.ExampleItem;
 
@@ -61,7 +60,7 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         //public final View mView;
-        public TextView buttonView;
+        public IconTextView buttonView;
         public TextView textView;
         public ImageView imageView;
         //public ExampleItem mItem;
