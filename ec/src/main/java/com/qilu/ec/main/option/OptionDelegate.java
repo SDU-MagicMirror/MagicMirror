@@ -109,7 +109,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
                 mISignListener.onTokenExpired();
             }
         });
-        dialog.setNegativeButton("点错了", new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
