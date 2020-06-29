@@ -42,7 +42,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         name = rootView.findViewById(R.id.name);
         passWord = rootView.findViewById(R.id.passWord);
         user_img = rootView.findViewById(R.id.user_img);
-        honor = rootView.findViewById(R.id.honor);
+        honor = rootView.findViewById(R.id.edit_old_password);
         about = rootView.findViewById(R.id.about);
         listenerRegister();
     }
@@ -60,14 +60,70 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         if (v.getId() == R.id.name) {
             showNameDialog();
         } else if (v.getId() == R.id.passWord) {
-            // TODO 更改密码
+            showPasswordDialog();
         } else if (v.getId() == R.id.user_img) {
             // TODO 更改头像
-        } else if (v.getId() == R.id.honor) {
-            // TODO 更改头衔
+            changeImg();
+        } else if (v.getId() == R.id.edit_old_password) {
+            showHonorDialog();
         } else if (v.getId() == R.id.about) {
-            // TODO 关于
+            // TODO 关于（暂无页面）
+            showAbout();
         }
+    }
+
+    private void showAbout() {
+
+    }
+
+    private void showHonorDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.honor_dialog, null, false);
+        dialog.setView(view);
+        EditText honor = view.findViewById(R.id.honor);
+        if (data != null && data.getSignature() != null && !data.getSignature().trim().equals(""))
+            honor.setText(data.getSignature());
+        dialog.setTitle("更改头衔");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("确定", (dialog1, which) -> {
+            String newHonor = String.valueOf(honor.getText());
+            // TODO 提交修改头衔
+
+            dialog1.dismiss();
+        });
+        dialog.setNegativeButton("取消", (dialog12, which) -> {
+            //关闭对话框
+            dialog12.dismiss();
+        });
+        dialog.show();
+    }
+
+    private void changeImg() {
+        // TODO 更改头像操作
+    }
+
+    private void showPasswordDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.password_dialog, null, false);
+        dialog.setView(view);
+        EditText edit_old_password = view.findViewById(R.id.edit_old_password);
+        EditText edit_new_password = view.findViewById(R.id.edit_new_password);
+        EditText edit_sure_password = view.findViewById(R.id.edit_sure_password);
+        dialog.setTitle("修改密码");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("确定", (dialog1, which) -> {
+            String oldPassword = String.valueOf(edit_old_password.getText());
+            String newPassword = String.valueOf(edit_new_password.getText());
+            String surePassword = String.valueOf(edit_sure_password.getText());
+            // TODO 提交修改密码
+
+            dialog1.dismiss();
+        });
+        dialog.setNegativeButton("取消", (dialog12, which) -> {
+            //关闭对话框
+            dialog12.dismiss();
+        });
+        dialog.show();
     }
 
 
@@ -75,10 +131,10 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.name_dialog, null, false);
         dialog.setView(view);
-        EditText name = view.findViewById(R.id.editTextName);
+        EditText name = view.findViewById(R.id.edit_old_password);
         //对话框标题设置
         dialog.setTitle("修改昵称");
-        //对话框设置不可以用Back键退出
+        //对话框设置可以用Back键退出
         dialog.setCancelable(true);
         // dialog.clone()
                 /*
@@ -90,7 +146,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         dialog.setPositiveButton("确定", (dialog1, which) -> {
             //关闭对话框
             String newName = String.valueOf(name.getText());
-            // TODO 提交修改
+            // TODO 提交修改昵称
 
             dialog1.dismiss();
         });

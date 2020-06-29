@@ -19,7 +19,9 @@ import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
 import com.qilu.ui.image.GlideTools;
 
-public class NewsCreateDelegate extends QiluDelegate implements View.OnClickListener {
+import java.util.Objects;
+
+public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickListener {
     private IconTextView button_1;  //添加图片按钮
     private Button button;          //发表按钮
     private EditText editText;      //文字输入框
@@ -30,7 +32,7 @@ public class NewsCreateDelegate extends QiluDelegate implements View.OnClickList
 
     @Override
     public Object setLayout() {
-        return R.layout.news_create;
+        return R.layout.example_create;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class NewsCreateDelegate extends QiluDelegate implements View.OnClickList
     public void onClick(View v) {
         if (v.getId() == R.id.button_1) {
             //拍照
-            NewsCreateDelegate temp = this;
+            ExampleCreateDelegate temp = this;
             CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
                 @Override
                 public void executeCallback(@Nullable Uri args) {
@@ -62,10 +64,22 @@ public class NewsCreateDelegate extends QiluDelegate implements View.OnClickList
             startCameraWithCheck();
         } else if (v.getId() == R.id.button) {
             text = String.valueOf(editText.getText());
-            if (img_1_path != null && !img_1_path.equals("")) { //图片路径不为空
+            if (text == null || text.trim().equals("")) {
+                new AlertDialog.Builder(Objects.requireNonNull(getContext()))
+                        .setTitle("错误")
+                        .setMessage("描述不可为空")
+                        .setPositiveButton("确定", null)
+                        .show();
+            } else if (img_1_path != null && !img_1_path.equals("")) { //图片路径不为空
                 //TODO 图片处理
+            } else {
+                new AlertDialog.Builder(Objects.requireNonNull(getContext()))
+                        .setTitle("错误")
+                        .setMessage("图片不可为空")
+                        .setPositiveButton("确定", null)
+                        .show();
             }
-            Toast.makeText(getContext(), "假装发表", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "假装上传", Toast.LENGTH_SHORT).show();
         } else if (v.getId() == R.id.only_img) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(null);

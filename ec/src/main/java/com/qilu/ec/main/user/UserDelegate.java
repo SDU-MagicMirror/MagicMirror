@@ -5,8 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,10 +64,11 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
         history = rootView.findViewById(R.id.history);
         upload = rootView.findViewById(R.id.upload);
         // TODO 点击star跳转到示例收藏
+        star.setOnClickListener(this);
         // TODO 点击history跳转到美妆历史
         history.setOnClickListener(this);
         // TODO 点击upload跳转到上传示例
-
+        upload.setOnClickListener(this);
         RestClient.builder()
                 .url("/account")
                 .loader(getContext())
@@ -78,9 +79,14 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
                         Gson gson = new Gson();
                         UserProfile userProfile = gson.fromJson(response, UserProfile.class);
                         data = userProfile.getData().getData();
-                        Image.showResultImage(data.getAvatar(), user_img);
-                        text_name.setText(data.getUserName());
-                        text_honor.setText(data.getSignature());
+                        if (data != null) {
+                            Image.showResultImage(data.getAvatar(), user_img);
+                            text_name.setText(data.getUserName());
+                            text_honor.setText(data.getSignature());
+                        } else {
+                            Log.e("data", "用户信息为空！");
+                            Toast.makeText(getContext(), "用户信息获取失败！", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .failure(new IFailure() {
@@ -103,18 +109,24 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
     public void onClick(View v) {
         if (v.getId() == R.id.option) {
             changeToOption();
+        } else if (v.getId() == R.id.star) {
+            //跳转到示例收藏
+            getParentDelegate().getSupportDelegate().start(new StarDelegate());
         } else if (v.getId() == R.id.history) {
             //跳转到美妆历史
-            getParentDelegate().getSupportDelegate().start(new HistoryDelegate(getImageBase64List()));
+            getParentDelegate().getSupportDelegate().start(new HistoryDelegate(getImageHistoryList()));
+        } else if (v.getId() == R.id.upload) {
+            //跳转到上传示例
+            getParentDelegate().getSupportDelegate().start(new ExampleCreateDelegate());
         }
     }
 
     private void changeToOption() {
-        getParentDelegate().getSupportDelegate().start(new OptionDelegate(context,data));
+        getParentDelegate().getSupportDelegate().start(new OptionDelegate(context, data));
     }
 
-    private List<String> getImageBase64List() {
-        // TODO 从本地获取图片列表，传入adapter中
+    private List<String> getImageHistoryList() {
+        // TODO 从本地获取图片和时间列表，传入adapter中
         return null;
     }
 }

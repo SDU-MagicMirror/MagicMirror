@@ -69,7 +69,7 @@
             android:textSize="@dimen/opTextSize2" />
 
         <TextView
-            android:id="@+id/honor"
+            android:id="@+id/edit_old_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/textSep"

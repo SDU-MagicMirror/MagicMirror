@@ -5,13 +5,15 @@
     android:orientation="vertical">
 
     <TextView
+        android:layout_margin="@dimen/textSep"
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="头衔" />
 
     <EditText
-        android:id="@+id/editTextName"
+        android:layout_margin="@dimen/textSep"
+        android:id="@+id/honor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
