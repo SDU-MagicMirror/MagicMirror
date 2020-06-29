@@ -4,6 +4,7 @@
 
     <string name="starToPlus">{fa-heart-o}收藏</string>
     <string name="starPlused">{fa-heart}已收藏</string>
+    <string name="download">{fa-download}下载</string>
 
     <string name="honor">头衔</string>
     <string name="name">名字</string>

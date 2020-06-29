@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -68,6 +67,26 @@
                         android:layout_height="@dimen/button_height2"
                         android:gravity="center"
                         android:text="{fa-magic}上妆"
+                        android:textColor="@color/lightslategray"
+                        android:textSize="@dimen/opTextSize2"
+                        tools:ignore="RelativeOverlap" />
+
+                    <com.joanzapata.iconify.widget.IconTextView
+                        android:id="@+id/button3"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_height2"
+                        android:gravity="center"
+                        android:text="@string/download"
+                        android:textColor="@color/lightslategray"
+                        android:textSize="@dimen/opTextSize2"
+                        tools:ignore="RelativeOverlap" />
+
+                    <com.joanzapata.iconify.widget.IconTextView
+                        android:id="@+id/button2"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_height2"
+                        android:gravity="center"
+                        android:text="@string/starPlused"
                         android:textColor="@color/lightslategray"
                         android:textSize="@dimen/opTextSize2"
                         tools:ignore="RelativeOverlap" />

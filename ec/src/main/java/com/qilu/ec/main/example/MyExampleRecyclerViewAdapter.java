@@ -84,7 +84,6 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
                 if (result > 0) {
                     // 成功
                     exampleItem.setSaved(true);
-                    Toast.makeText(context, "收藏成功！", Toast.LENGTH_SHORT).show();
                     ((IconTextView) v).setText(R.string.starPlused);
                     exampleItem.setSaved(true);
                 }
