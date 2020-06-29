@@ -51,11 +51,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_margin="@dimen/separator"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:gravity="center_horizontal|center_vertical"
                             android:text="示例照片"
                             android:textColor="@color/black"
@@ -68,7 +69,7 @@
                             android:layout_marginStart="@dimen/separator"
                             android:gravity="center"
                             android:text="{fa-plus-circle}"
-                            android:textSize="@dimen/opTextSize2" />
+                            android:textSize="@dimen/opIconTextSize3" />
                     </android.support.v7.widget.LinearLayoutCompat>
 
                     <ImageView
@@ -88,11 +89,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_margin="@dimen/separator"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:gravity="center_horizontal|center_vertical"
                             android:text="用户照片"
                             android:textColor="@color/black"
@@ -105,7 +107,7 @@
                             android:layout_marginStart="@dimen/separator"
                             android:gravity="center"
                             android:text="{fa-plus-circle}"
-                            android:textSize="@dimen/opTextSize2" />
+                            android:textSize="@dimen/opIconTextSize3" />
                     </android.support.v7.widget.LinearLayoutCompat>
 
                     <ImageView
@@ -149,7 +151,7 @@
                     app:ds_tickMarkInactiveColor="@color/white"
                     app:ds_tickMarkStep="1"
                     app:ds_trackColor="@color/colorECampus"
-                    app:ds_trackWidth="4dp"
+                    app:ds_trackWidth="5dp"
                     app:ds_valueLabelMode="none"
                     app:layout_flexGrow="1" />
 
@@ -176,7 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/separator"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <RadioButton
                     android:id="@+id/radio_1"
@@ -196,13 +198,14 @@
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <CheckBox
                     android:id="@+id/check_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
                     android:text="眼影"
                     android:textSize="@dimen/opTextSize" />
 

@@ -29,7 +29,7 @@
                     android:layout_marginStart="@dimen/separator"
                     android:gravity="center"
                     android:text="{fa-plus-circle}"
-                    android:textSize="@dimen/opIconTextSize2" />
+                    android:textSize="@dimen/opIconTextSize3" />
 
                 <TextView
                     android:layout_width="wrap_content"
