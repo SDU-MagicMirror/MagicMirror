@@ -40,7 +40,10 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
         ExampleItem exampleItem = mValues.get(position);
         holder.textView.setText(exampleItem.getItemNumber());
         holder.imageView.setImageDrawable(exampleItem.getImage());
-
+        holder.isSaved = exampleItem.getSaved();
+        if (holder.isSaved){
+            holder.buttonView.setText(R.string.starPlused);
+        }
         holder.buttonView.setOnClickListener(this);
     }
 
@@ -55,15 +58,16 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
     @Override
     public void onClick(View v) {
         //只有一个控件监听，不用设if判断
+        IconTextView buttonView = v.findViewById(R.id.button);
+        buttonView.setText(R.string.starPlused);
         // TODO 将id,图和文字三个数据放到一个数据对象json存到本地缓存文件中，json对象可以沿用sample.ExampleItem类（将其中的Drawable改为String即可）
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        //public final View mView;
         public IconTextView buttonView;
         public TextView textView;
         public ImageView imageView;
-        //public ExampleItem mItem;
+        public Boolean isSaved;
 
         public ViewHolder(View view/*, Context context*/) {
             super(view);

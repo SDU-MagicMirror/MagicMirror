@@ -9,11 +9,21 @@ public class ExampleItem {
     private String id;
     private String itemNumber;
     private Drawable image;
+    private Boolean isSaved;
 
-    public ExampleItem(String id, String itemNumber, Drawable image) {
+    public Boolean getSaved() {
+        return isSaved;
+    }
+
+    public void setSaved(Boolean isSaved) {
+        this.isSaved = isSaved;
+    }
+
+    public ExampleItem(String id, String itemNumber, Drawable image, Boolean isSaved) {
         this.id = id;
         this.itemNumber = itemNumber;
         this.image = image;
+        this.isSaved = isSaved;
     }
 
     public String getId() {

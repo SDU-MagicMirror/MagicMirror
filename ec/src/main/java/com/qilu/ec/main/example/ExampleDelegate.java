@@ -64,7 +64,7 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
 
         List<ExampleItem> exampleItems = new ArrayList<ExampleItem>();
         for (int i = 0; i < 4; i++) {
-            ExampleItem exampleItem = new ExampleItem(String.valueOf(i), "内容" + (i + 1), female);
+            ExampleItem exampleItem = new ExampleItem(String.valueOf(i), "内容" + (i + 1), female, false);
             exampleItems.add(exampleItem);
         }
         return exampleItems;
