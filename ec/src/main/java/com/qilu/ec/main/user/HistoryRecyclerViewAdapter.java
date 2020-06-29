@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.ec.R;
 import com.qilu.ec.main.util.Image;
 
@@ -59,7 +60,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
-        public TextView button;
+        public IconTextView button;
 
         public ViewHolder(View view) {
             super(view);

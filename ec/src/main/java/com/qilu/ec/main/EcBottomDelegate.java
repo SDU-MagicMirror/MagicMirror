@@ -9,7 +9,6 @@ import com.qilu.core.delegates.bottom.BaseBottomDelegate;
 import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.delegates.bottom.BottomTabBean;
 import com.qilu.core.delegates.bottom.ItemBuilder;
-import com.qilu.ec.main.home.HomeDelegate;
 import com.qilu.ec.main.example.ExampleDelegate;
 import com.qilu.ec.main.decorate.DecorateDelegate;
 import com.qilu.ec.main.user.UserDelegate;

@@ -49,7 +49,6 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
 
     @Override
     public Object setLayout() {
-//        return R.layout.delegate_user;
         return R.layout.me;
     }
 

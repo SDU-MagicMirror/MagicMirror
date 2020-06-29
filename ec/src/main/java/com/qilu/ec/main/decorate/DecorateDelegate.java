@@ -62,7 +62,6 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
 
     //结果区域
     private LinearLayoutCompat resultLayout;
-    private IconTextView button_result;
     private ImageView img_result;
 
     //保存待上传图片路径的字符串
@@ -113,7 +112,6 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
         submit = view.findViewById(R.id.submit);
 
         resultLayout = view.findViewById(R.id.resultLayout);
-        button_result = view.findViewById(R.id.button_result);
         img_result = view.findViewById(R.id.img_result);
         resultLayout.setVisibility(View.INVISIBLE);
 
@@ -155,7 +153,6 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
         check_2.setOnCheckedChangeListener(onCheckedChangeListener);
         check_3.setOnCheckedChangeListener(onCheckedChangeListener);
         submit.setOnClickListener(this);
-        button_result.setOnClickListener(this);
     }
 
     @Override
@@ -178,7 +175,8 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
             });
             startCameraWithCheck();
 
-        } else if (id == R.id.button_2) {
+        }
+        else if (id == R.id.button_2) {
 //            position = POSITION_TWO;
 
             // 设置拍照后的动作
@@ -196,10 +194,9 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
             });
             startCameraWithCheck();
 
-        } else if (id == R.id.submit) {
+        }
+        else if (id == R.id.submit) {
             submitImage();
-        } else if (id == R.id.button_result) {
-
         }
     }
 
