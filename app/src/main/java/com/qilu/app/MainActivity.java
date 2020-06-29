@@ -37,7 +37,7 @@ public class MainActivity extends ProxyActivity implements ISignListener,ILaunch
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.white));
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorECampus));
     }
 
     @Override
