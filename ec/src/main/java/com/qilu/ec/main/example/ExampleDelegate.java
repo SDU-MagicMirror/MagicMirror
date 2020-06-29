@@ -68,19 +68,6 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
         super.onDestroy();
     }
 
-    //测试数据
-    /*private List<ExampleItem> generateDatas() {
-        Resources resources = getContext().getResources();
-        Drawable user_example = resources.getDrawable(R.drawable.user_example);
-        Drawable female = resources.getDrawable(R.drawable.female);
-
-        List<ExampleItem> exampleItems = new ArrayList<ExampleItem>();
-        for (int i = 0; i < 4; i++) {
-            ExampleItem exampleItem = new ExampleItem(String.valueOf(i), "内容" + (i + 1), female, false);
-            exampleItems.add(exampleItem);
-        }
-        return exampleItems;
-    }*/
 
     private void requestDatas() {
         RestClient.builder()

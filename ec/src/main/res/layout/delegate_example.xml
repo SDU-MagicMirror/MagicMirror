@@ -33,9 +33,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/title"
+                android:layout_alignParentEnd="true"
                 android:text="{fa-refresh }"
-                android:textSize="@dimen/opTextSize3"
+                android:textSize="@dimen/opIconTextSize3"
                 android:textColor="@color/peter_river"
                 android:layout_marginLeft="@dimen/textSep"/>
 

@@ -53,10 +53,10 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
         }
         holder.buttonView.setOnClickListener(v -> {
             //只有buttonView监听click
+            UserCollectionHelper userCollectionHelper = new UserCollectionHelper(context);
+            SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
             if (exampleItem.getSaved()) {
                 //已收藏
-                UserCollectionHelper userCollectionHelper = new UserCollectionHelper(context);
-                SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
                 int result = db.delete(UserCollectionHelper.TABLE_NAME, UserCollectionHelper.ID + "=?", new String[]{exampleItem.getId()});
                 if (result > 0) {
                     //成功
@@ -73,8 +73,6 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
                 //如果get返回的是Base64的String
                 img_base64 = exampleItem.getImage();
                 // 示例
-                UserCollectionHelper userCollectionHelper = new UserCollectionHelper(context);
-                SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
 
                 ContentValues values = new ContentValues();
                 values.put(UserCollectionHelper.ID, id);
