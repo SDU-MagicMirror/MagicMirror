@@ -81,6 +81,7 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
     }
 
 
+    // TODO 小Bug：加载条不显示
     private void requestDatas() {
         RestClient.builder()
                 .url("http://106.13.96.60:8888/star/all")

@@ -3,6 +3,7 @@ package com.qilu.ec.main.option;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,6 +33,8 @@ import com.qilu.ec.main.user.UserDelegate;
 import com.qilu.ec.sign.ISignListener;
 import com.qilu.ui.image.GlideTools;
 
+import java.util.Objects;
+
 @SuppressLint("ValidFragment")
 public class OptionDelegate extends QiluDelegate implements View.OnClickListener {
     private Context context;
@@ -40,6 +43,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
     private TextView name;
     private TextView passWord;
     private TextView user_img;
+    private TextView user_exit;
 
     private UserDelegate userDelegate;
     private ISignListener mISignListener = null;
@@ -69,6 +73,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         name = rootView.findViewById(R.id.name);
         passWord = rootView.findViewById(R.id.passWord);
         user_img = rootView.findViewById(R.id.user_img);
+        user_exit = rootView.findViewById(R.id.user_exit);
         listenerRegister();
     }
 
@@ -76,6 +81,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         name.setOnClickListener(this);
         passWord.setOnClickListener(this);
         user_img.setOnClickListener(this);
+        user_exit.setOnClickListener(this);
     }
 
     @Override
@@ -86,7 +92,30 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
             showPasswordDialog();
         } else if (v.getId() == R.id.user_img) {
             changeImg();
+        } else if (v.getId() == R.id.user_exit) {
+            exit();
         }
+    }
+
+    private void exit() {
+        //退出
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        dialog.setTitle("确认");
+        dialog.setMessage("确认退出当前账号？");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mISignListener.onTokenExpired();
+            }
+        });
+        dialog.setNegativeButton("点错了", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     private void changeImg() {
