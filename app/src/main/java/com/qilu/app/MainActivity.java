@@ -7,6 +7,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.qilu.core.activities.ProxyActivity;
 import com.qilu.core.app.AccountManager;
 import com.qilu.core.delegates.QiluDelegate;
@@ -23,16 +25,14 @@ public class MainActivity extends ProxyActivity implements ISignListener,ILaunch
         return new LauncherDelegate();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Util.requestPermission(this, Manifest.permission.ACCESS_NETWORK_STATE);
         Util.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         Util.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        Util.requestPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
-        Util.requestPermission(this, Manifest.permission.CHANGE_WIFI_STATE);
         Util.requestPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW);
-        Util.requestPermission(this, Manifest.permission.RECORD_AUDIO);
         Util.requestPermission(this, Manifest.permission.WAKE_LOCK);
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
