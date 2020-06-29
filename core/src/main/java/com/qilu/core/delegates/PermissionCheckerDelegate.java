@@ -28,8 +28,8 @@ import permissions.dispatcher.RuntimePermissions;
 public abstract class PermissionCheckerDelegate extends BaseDelegate {
 
     // 默认的最大照片尺寸
-    private int maxWidth=2000;
-    private int maxHeight=2000;
+    private int maxWidth=400;
+    private int maxHeight=400;
 
     //不是直接调用方法
     @NeedsPermission(Manifest.permission.CAMERA)
