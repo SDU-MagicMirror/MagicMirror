@@ -1,24 +1,31 @@
 package com.qilu.ec.main.example;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.ec.R;
+import com.qilu.core.util.storage.UserCollectionHelper;
 import com.qilu.ec.main.sample.ExampleItem;
+import com.qilu.ec.main.util.Image;
 
+import java.util.Base64;
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link ExampleItem}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExampleRecyclerViewAdapter.ViewHolder> implements View.OnClickListener {
+public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExampleRecyclerViewAdapter.ViewHolder> {
     private Context context;
     private List<ExampleItem> mValues;
 
@@ -40,13 +47,45 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
         holder.textView.setText(exampleItem.getItemNumber());
         holder.imageView.setImageDrawable(exampleItem.getImage());
         holder.isSaved = exampleItem.getSaved();
-        if (holder.isSaved){
+        if (holder.isSaved) {
             holder.buttonView.setText(R.string.starPlused);
-        }
-        else{
+        } else {
             holder.buttonView.setText(R.string.starToPlus);
         }
-        holder.buttonView.setOnClickListener(this);
+        holder.buttonView.setOnClickListener(v -> {
+            //只有buttonView监听click
+            if (exampleItem.getSaved()) {
+                //已收藏
+                // TODO 取消收藏
+                ((IconTextView)v).setText(R.string.starToPlus);
+            } else {
+                //未收藏
+                String id = exampleItem.getId();
+                String content = exampleItem.getItemNumber();
+                //假设接口的图片是Base64字符串
+                String img_base64;
+                //如果get返回的是Drawable
+                img_base64 = Image.BitmapToStrByBase64(Image.drawableToBitmap(exampleItem.getImage()));
+                //如果get返回的是Base64的String
+                //img_base64=exampleItem.getImage();
+                // 示例
+                // TODO 将id,图和文字三个数据放到一个数据库，对象可以沿用sample.ExampleItem类（将其中的Drawable改为String即可）
+                UserCollectionHelper userCollectionHelper = new UserCollectionHelper(context);
+                SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
+
+                ContentValues values = new ContentValues();
+                values.put(UserCollectionHelper.ID, id);
+                values.put(UserCollectionHelper.CONTENT, content);
+                values.put(UserCollectionHelper.IMAGE, img_base64);
+
+                long result = db.insert(UserCollectionHelper.TABLE_NAME, null, values);
+                if (result != -1) {
+                    //更新成功
+                    Toast.makeText(context, "收藏成功！", Toast.LENGTH_SHORT).show();
+                    ((IconTextView)v).setText(R.string.starPlused);
+                }
+            }
+        });
     }
 
     @Override
@@ -57,32 +96,16 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
             return 0;
     }
 
-    @Override
-    public void onClick(View v) {
-        // TODO 将id,图和文字三个数据放到一个数据库，对象可以沿用sample.ExampleItem类（将其中的Drawable改为String即可）
-
-        // 示例
-//        UserCollectionHelper userCollectionHelper = new UserCollectionHelper(this.context);
-//        SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put(UserCollectionHelper.ID,"某id");
-//        values.put(UserCollectionHelper.CONTENT,"测试内容");
-//        values.put(UserCollectionHelper.IMAGE,"image");
-//
-//        db.insert(UserCollectionHelper.TABLE_NAME,null,values);
-    }
-
     static class ViewHolder extends RecyclerView.ViewHolder {
-        public View view;
-        public IconTextView buttonView;
-        public TextView textView;
-        public ImageView imageView;
-        public Boolean isSaved;
+        View view;
+        IconTextView buttonView;
+        TextView textView;
+        ImageView imageView;
+        Boolean isSaved;
 
         public ViewHolder(View view) {
             super(view);
-            this.view=view;
+            this.view = view;
             buttonView = view.findViewById(R.id.button);
             textView = (TextView) view.findViewById(R.id.text_content);
             imageView = (ImageView) view.findViewById(R.id.image);
