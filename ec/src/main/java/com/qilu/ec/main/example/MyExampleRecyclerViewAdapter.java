@@ -69,6 +69,7 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
                 //未收藏
                 Log.i("是否收藏", "否->是");
                 String id = exampleItem.getId();
+                Log.i("收藏的ID", id);
                 String content = exampleItem.getContent();
                 //假设接口的图片是Base64字符串
                 String img_base64;

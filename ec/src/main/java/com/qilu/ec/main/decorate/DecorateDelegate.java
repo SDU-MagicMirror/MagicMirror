@@ -32,14 +32,12 @@ import com.qilu.ec.main.util.Image;
 import com.qilu.ec.sign.ISignListener;
 import com.qilu.ui.image.GlideTools;
 
+import java.io.File;
+
 import hearsilent.discreteslider.DiscreteSlider;
 
 @SuppressLint("ValidFragment")
 public class DecorateDelegate extends BottomItemDelegate implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
-
-    private Context context;
-
-
     private IconTextView button_1;
     private IconTextView button_2;
     private ImageView img;
@@ -63,6 +61,8 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     //保存待上传图片路径的字符串
     private String img_1_path = null;
     private String img_2_path = null;
+    private boolean hasImg_1;
+    private String img1_base64;
 
     private ISignListener mISignListener = null;
 
@@ -74,10 +74,14 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
         }
     }
 
+    public DecorateDelegate() {
+        this.hasImg_1 = false;
+        this.img1_base64 = null;
+    }
 
-    @SuppressLint("ValidFragment")
-    public DecorateDelegate(Context context) {
-        this.context = context;
+    public DecorateDelegate(String img_Base64) {
+        this.hasImg_1 = true;
+        this.img1_base64 = img_Base64;
     }
 
     @Override
@@ -112,6 +116,19 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
         resultLayout.setVisibility(View.INVISIBLE);
 
         listenerRegister();
+        checkToShowImg1();
+    }
+
+    private void checkToShowImg1() {
+        if (hasImg_1) {
+            //TODO 从收藏示例中跳入的
+            File file = Image.base64ToFile(img1_base64);  //获取临时文件路径
+            String path = file.getAbsolutePath();
+            Log.i("文件路径", file.getAbsolutePath());
+            img_1_path = path;
+            DecorateDelegate temp = this;
+            GlideTools.showImagewithGlide(temp, img_1_path, (ImageView) $(R.id.img));
+        }
     }
 
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
@@ -171,8 +188,7 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
             });
             startCameraWithCheck();
 
-        }
-        else if (id == R.id.button_2) {
+        } else if (id == R.id.button_2) {
 //            position = POSITION_TWO;
 
             // 设置拍照后的动作
@@ -190,8 +206,7 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
             });
             startCameraWithCheck();
 
-        }
-        else if (id == R.id.submit) {
+        } else if (id == R.id.submit) {
             submitImage();
         }
     }
@@ -237,6 +252,8 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
      * 发送网络请求端,返回类型不确定，可能是图片相关类型
      */
     private void sendRequest(@Nullable String image1Path, @Nullable String image2Path, int levelDegree, String[] paramsValues) {
+        Log.i("img1路径", image1Path);
+        Log.i("img2路径", image2Path);
         if (image1Path != null && (!image1Path.isEmpty()) && image2Path != null && (!image2Path.isEmpty())) {
             // levelDegree: [0, 99]
             levelDegree += 1;

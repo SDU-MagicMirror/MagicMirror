@@ -10,21 +10,18 @@ import android.widget.TextView;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.ec.R;
+import com.qilu.ec.main.decorate.DecorateDelegate;
 import com.qilu.ec.main.sample.ExampleItem;
 import com.qilu.ec.main.util.Image;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link ExampleItem}.
- * TODO: Replace the implementation with code for your data type.
- */
-public class StarRecyclerViewAdapter extends RecyclerView.Adapter<StarRecyclerViewAdapter.ViewHolder> implements View.OnClickListener {
-    private Context context;
+public class StarRecyclerViewAdapter extends RecyclerView.Adapter<StarRecyclerViewAdapter.ViewHolder> {
+    private StarDelegate starDelegate;
     private List<ExampleItem> mValues;
 
-    public StarRecyclerViewAdapter(Context context, List<ExampleItem> items) {
-        this.context = context;
+    public StarRecyclerViewAdapter(StarDelegate starDelegate, List<ExampleItem> items) {
+        this.starDelegate = starDelegate;
         mValues = items;
     }
 
@@ -42,14 +39,20 @@ public class StarRecyclerViewAdapter extends RecyclerView.Adapter<StarRecyclerVi
 //        holder.imageView.setImageDrawable(exampleItem.getImage());
         Image.showResultImage(exampleItem.getImage(), holder.imageView);
         holder.isSaved = exampleItem.getSaved();
-        // TODO 取消收藏功能（暂时不做）
+        // TODO 取消收藏功能（暂时未做）
         /*if (holder.isSaved){
             holder.buttonView.setText(R.string.starPlused);
         }
         else{
             holder.buttonView.setText(R.string.starToPlus);
         }*/
-        holder.buttonView.setOnClickListener(this);
+        holder.buttonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO 转入界面后无法退到原fragment，未解决
+                starDelegate.getSupportDelegate().start(new DecorateDelegate(exampleItem.getImage()));
+            }
+        });
     }
 
     @Override
@@ -58,12 +61,6 @@ public class StarRecyclerViewAdapter extends RecyclerView.Adapter<StarRecyclerVi
             return mValues.size();
         else
             return 0;
-    }
-
-    @Override
-    public void onClick(View v) {
-        // TODO 转到美妆界面（调用带有图片的构造方法）
-
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

@@ -38,7 +38,7 @@ public class EcBottomDelegate extends BaseBottomDelegate {
     public LinkedHashMap<BottomTabBean, BottomItemDelegate> setItems(ItemBuilder builder) {
         final LinkedHashMap<BottomTabBean, BottomItemDelegate> items = new LinkedHashMap<>();
         items.put(new BottomTabBean("{fa-flag-o}", "示例榜"),new ExampleDelegate());
-        items.put(new BottomTabBean("{fa-magic}", "上妆"), new DecorateDelegate(getProxyActivity()));
+        items.put(new BottomTabBean("{fa-magic}", "上妆"), new DecorateDelegate());
         items.put(new BottomTabBean("{fa-user}","我"),new UserDelegate(getProxyActivity()));
         return builder.addItems(items).build();
     }
