@@ -244,6 +244,15 @@
                         android:text="结果图"
                         android:textColor="@color/black"
                         android:textSize="@dimen/opTextSize2" />
+                    <com.joanzapata.iconify.widget.IconTextView
+                        android:id="@+id/result_button"
+                        android:layout_marginLeft="@dimen/layout_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="{fa-download}"
+                        android:textColor="@color/peter_river"
+                        android:textSize="@dimen/opTextSize3" />
                 </android.support.v7.widget.LinearLayoutCompat>
 
                 <ImageView

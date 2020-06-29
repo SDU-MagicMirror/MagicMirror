@@ -40,6 +40,8 @@ import hearsilent.discreteslider.DiscreteSlider;
 public class DecorateDelegate extends BottomItemDelegate implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private IconTextView button_1;
     private IconTextView button_2;
+    private IconTextView result_button;
+    private String result_img_base64;
     private ImageView img;
     private ImageView img_2;
     private DiscreteSlider value;
@@ -73,6 +75,8 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
         View view = rootView;
         button_1 = view.findViewById(R.id.button_1);
         button_2 = view.findViewById(R.id.button_2);
+        result_button = view.findViewById(R.id.result_button);
+        result_img_base64 = null;
         img = view.findViewById(R.id.img);
         img_2 = view.findViewById(R.id.img_2);
         value = view.findViewById(R.id.value);
@@ -125,6 +129,7 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     private void listenerRegister() {
         button_1.setOnClickListener(this);
         button_2.setOnClickListener(this);
+        result_button.setOnClickListener(this);
         submit.setOnClickListener(this);
         radio_group.setOnCheckedChangeListener(this);
         check_1.setOnCheckedChangeListener(onCheckedChangeListener);
@@ -173,6 +178,8 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
 
         } else if (id == R.id.submit) {
             submitImage();
+        } else if (id == R.id.result_button) {
+            saveToLocal();
         }
     }
 
@@ -202,6 +209,13 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
 
     private void submitImage() {
         sendRequest(img_1_path, img_2_path, value.getProgress(), getType());
+    }
+
+    private void saveToLocal() {
+        if (result_img_base64 != null && !result_img_base64.equals("")) {
+            Image.saveImageToGallery(getContext(), Image.base64ToBitmap(result_img_base64));
+            Toast.makeText(getContext(), "保存成功", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -239,6 +253,7 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
                         public void onSuccess(String response) {
                             Image.showResultImage(response, img_result);
                             resultLayout.setVisibility(View.VISIBLE);
+                            result_img_base64 = response;   //用于下载到本地
                             saveHistory(response);
                         }
                     })
