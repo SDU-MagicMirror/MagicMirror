@@ -10,9 +10,10 @@ import com.qilu.core.util.callback.CallbackManager;
 import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
 
-import me.dm7.barcodescanner.zbar.Result;
-import me.dm7.barcodescanner.zbar.ZBarScannerView;
+/*import me.dm7.barcodescanner.zbar.Result;
+import me.dm7.barcodescanner.zbar.ZBarScannerView;*/
 
+/*
 public class ScannerDelegate extends QiluDelegate implements ZBarScannerView.ResultHandler {
     private ScanView mScanView = null;
 
@@ -64,3 +65,4 @@ public class ScannerDelegate extends QiluDelegate implements ZBarScannerView.Res
         getSupportDelegate().pop();
     }
 }
+*/

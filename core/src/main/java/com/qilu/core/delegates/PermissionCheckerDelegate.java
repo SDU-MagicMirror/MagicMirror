@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.qilu.core.ui.camera.CameraImageBean;
 import com.qilu.core.ui.camera.QiluCamera;
 import com.qilu.core.ui.camera.RequestCodes;
-import com.qilu.core.ui.scanner.ScannerDelegate;
+//import com.qilu.core.ui.scanner.ScannerDelegate;
 import com.qilu.core.util.callback.CallbackManager;
 import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
@@ -50,7 +50,7 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
     //扫描二维码(不直接调用)
     @NeedsPermission(Manifest.permission.CAMERA)
     void startScan(BaseDelegate delegate) {
-        delegate.getSupportDelegate().startForResult(new ScannerDelegate(), RequestCodes.SCAN);
+//        delegate.getSupportDelegate().startForResult(new ScannerDelegate(), RequestCodes.SCAN);
     }
 
     public void startScanWithCheck(BaseDelegate delegate) {

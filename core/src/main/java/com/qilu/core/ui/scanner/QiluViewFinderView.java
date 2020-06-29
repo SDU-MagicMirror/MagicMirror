@@ -4,9 +4,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 
-import me.dm7.barcodescanner.core.ViewFinderView;
+//import me.dm7.barcodescanner.core.ViewFinderView;
 
-public class QiluViewFinderView extends ViewFinderView {
+/*public class QiluViewFinderView extends ViewFinderView {
     public QiluViewFinderView(Context context) {
         this(context, null);
     }
@@ -17,4 +17,4 @@ public class QiluViewFinderView extends ViewFinderView {
         mBorderPaint.setColor(Color.YELLOW);
         mLaserPaint.setColor(Color.YELLOW);
     }
-}
+}*/

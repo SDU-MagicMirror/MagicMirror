@@ -3,9 +3,10 @@ package com.qilu.core.ui.scanner;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import me.dm7.barcodescanner.core.IViewFinder;
-import me.dm7.barcodescanner.zbar.ZBarScannerView;
+/*import me.dm7.barcodescanner.core.IViewFinder;
+import me.dm7.barcodescanner.zbar.ZBarScannerView;*/
 
+/*
 public class ScanView extends ZBarScannerView {
 
     public ScanView(Context context) {
@@ -20,4 +21,4 @@ public class ScanView extends ZBarScannerView {
     protected IViewFinder createViewFinderView(Context context) {
         return new QiluViewFinderView(context);
     }
-}
+}*/
