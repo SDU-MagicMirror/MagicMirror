@@ -65,15 +65,15 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
         // TODO 将id,图和文字三个数据放到一个数据库，对象可以沿用sample.ExampleItem类（将其中的Drawable改为String即可）
 
         // 示例
-        UserCollectionHelper userCollectionHelper = new UserCollectionHelper(this.context);
-        SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(UserCollectionHelper.ID,"某id");
-        values.put(UserCollectionHelper.CONTENT,"测试内容");
-        values.put(UserCollectionHelper.IMAGE,"image");
-
-        db.insert(UserCollectionHelper.TABLE_NAME,null,values);
+//        UserCollectionHelper userCollectionHelper = new UserCollectionHelper(this.context);
+//        SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
+//
+//        ContentValues values = new ContentValues();
+//        values.put(UserCollectionHelper.ID,"某id");
+//        values.put(UserCollectionHelper.CONTENT,"测试内容");
+//        values.put(UserCollectionHelper.IMAGE,"image");
+//
+//        db.insert(UserCollectionHelper.TABLE_NAME,null,values);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
