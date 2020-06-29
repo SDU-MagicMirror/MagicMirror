@@ -78,7 +78,7 @@
                         android:fontFamily="serif"
                         android:gravity="center"
                         android:text="name1"
-                        android:textColor="@color/lightblue"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/opTextSize2" />
 
                     <TextView
@@ -88,6 +88,7 @@
                         android:fontFamily="sans-serif"
                         android:gravity="center"
                         android:text="name2"
+                        android:textColor="@color/lightblue"
                         android:textSize="@dimen/opTextSize" />
                 </android.support.v7.widget.LinearLayoutCompat>
             </android.support.v7.widget.LinearLayoutCompat>

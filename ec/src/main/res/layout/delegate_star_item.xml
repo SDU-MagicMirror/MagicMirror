@@ -65,7 +65,7 @@
                     <com.joanzapata.iconify.widget.IconTextView
                         android:id="@+id/button"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/button_height"
+                        android:layout_height="@dimen/button_height2"
                         android:gravity="center"
                         android:text="{fa-magic}上妆"
                         android:textColor="@color/lightslategray"

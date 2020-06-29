@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
-import com.qilu.core.util.storage.QiluPreference;
 import com.qilu.ec.main.sample.ExampleItem;
 
 import java.util.ArrayList;
@@ -29,8 +28,8 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
 
     @Override
     public Object setLayout() {
-//        return R.layout.delegate_example;
-        return R.layout.fragment_example_list;
+//        return R.layout.delegate_example_item;
+        return R.layout.delegate_example;
     }
 
     @Override

@@ -3,14 +3,11 @@ package com.qilu.ec.main.decorate;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +28,6 @@ import com.qilu.core.net.callback.ISuccess;
 import com.qilu.core.util.callback.CallbackManager;
 import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
-import com.qilu.core.util.storage.QiluPreference;
 import com.qilu.ec.main.util.Image;
 import com.qilu.ec.sign.ISignListener;
 import com.qilu.ui.image.GlideTools;
@@ -86,7 +82,7 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
 
     @Override
     public Object setLayout() {
-        return R.layout.decorate;
+        return R.layout.delegate_decorate;
     }
 
     @SuppressLint("HandlerLeak")

@@ -1,8 +1,6 @@
 package com.qilu.ec.main.example;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +10,6 @@ import android.widget.TextView;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.ec.R;
-import com.qilu.core.util.storage.UserCollectionHelper;
 import com.qilu.ec.main.sample.ExampleItem;
 
 import java.util.List;
@@ -33,7 +30,7 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
     @SuppressWarnings("NullableProblems")
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_example, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.delegate_example_item, parent, false);
         return new ViewHolder(view);
     }
 

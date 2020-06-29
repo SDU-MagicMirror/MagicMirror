@@ -50,5 +50,5 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/fragment_example" />
+        tools:listitem="@layout/delegate_example_item" />
 </android.support.v7.widget.LinearLayoutCompat>

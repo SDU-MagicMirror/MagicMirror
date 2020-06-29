@@ -60,7 +60,7 @@
                     <com.joanzapata.iconify.widget.IconTextView
                         android:id="@+id/button"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/button_height"
+                        android:layout_height="@dimen/button_height2"
                         android:gravity="center"
                         android:text="{fa-download}保存到相册"
                         android:textColor="@color/lightslategray"
