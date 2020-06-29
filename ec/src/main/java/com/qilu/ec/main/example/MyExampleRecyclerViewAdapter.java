@@ -61,6 +61,7 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
                 if (result > 0) {
                     //成功
                     ((IconTextView) v).setText(R.string.starToPlus);
+                    exampleItem.setSaved(false);
                 }
             } else {
                 //未收藏
@@ -83,6 +84,7 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
                 if (result != -1) {
                     //更新成功
                     Toast.makeText(context, "收藏成功！", Toast.LENGTH_SHORT).show();
+                    exampleItem.setSaved(true);
                     ((IconTextView) v).setText(R.string.starPlused);
                 }
             }

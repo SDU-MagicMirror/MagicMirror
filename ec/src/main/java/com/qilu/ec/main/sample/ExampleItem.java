@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 public class ExampleItem {
     private String id;
     private String content;
-    //    private Drawable image;
     private String image;
     private Boolean isSaved;
 
