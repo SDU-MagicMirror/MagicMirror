@@ -1,6 +1,7 @@
 package com.qilu.app;
 
 import android.Manifest;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Window;
@@ -12,12 +13,17 @@ import androidx.annotation.RequiresApi;
 import com.qilu.core.activities.ProxyActivity;
 import com.qilu.core.app.AccountManager;
 import com.qilu.core.delegates.QiluDelegate;
+import com.qilu.core.util.storage.ImageHistoryHelper;
+import com.qilu.core.util.storage.QiluPreference;
+import com.qilu.core.util.storage.UserCollectionHelper;
 import com.qilu.ec.launcher.LauncherDelegate;
 import com.qilu.ec.main.EcBottomDelegate;
 import com.qilu.ec.sign.ISignListener;
 import com.qilu.ec.sign.SignInDelegate;
 import com.qilu.ui.launcher.ILauncherListener;
 import com.qilu.ui.launcher.OnLauncherFinishTag;
+
+import java.io.File;
 
 public class MainActivity extends ProxyActivity implements ISignListener,ILauncherListener {
     @Override
@@ -63,6 +69,9 @@ public class MainActivity extends ProxyActivity implements ISignListener,ILaunch
     @Override
     public void onTokenExpired() {
         AccountManager.setSignState("","","",false);
+        QiluPreference.clearAppPreferences();
+        deleteDatabase(UserCollectionHelper.TABLE_NAME);
+        deleteDatabase(ImageHistoryHelper.TABLE_NAME);
         getSupportDelegate().pop();
         getSupportDelegate().startWithPop(new SignInDelegate());
     }

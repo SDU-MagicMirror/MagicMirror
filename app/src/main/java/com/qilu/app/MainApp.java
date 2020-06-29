@@ -32,8 +32,6 @@ public class MainApp extends Application {
                 .withApiHost("http://106.13.96.60:8888/")
                 .withLoaderDelayed(500)
                 .configure();
-        QiluPreference.addCustomAppProfile("apiHost","http://106.13.96.60:8888/");
-
     }
 }
 
