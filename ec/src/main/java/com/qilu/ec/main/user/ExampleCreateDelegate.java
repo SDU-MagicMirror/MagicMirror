@@ -1,5 +1,6 @@
 package com.qilu.ec.main.user;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,12 +12,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.delegates.QiluDelegate;
 import com.qilu.core.ec.R;
+import com.qilu.core.net.RestClient;
+import com.qilu.core.net.callback.IError;
+import com.qilu.core.net.callback.IFailure;
+import com.qilu.core.net.callback.ISuccess;
 import com.qilu.core.util.callback.CallbackManager;
 import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
+import com.qilu.ec.main.sample.example_create.ExampleCreate;
 import com.qilu.ui.image.GlideTools;
 
 import java.util.Objects;
@@ -72,6 +79,7 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
                         .show();
             } else if (img_1_path != null && !img_1_path.equals("")) { //图片路径不为空
                 //TODO 图片处理
+                uploadExample(getContext(), text, img_1_path);
             } else {
                 new AlertDialog.Builder(Objects.requireNonNull(getContext()))
                         .setTitle("错误")
@@ -93,5 +101,26 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
             });
             builder.show();
         }
+    }
+
+    private void uploadExample(Context context, String text, String img_path) {
+        RestClient.builder()
+                .url("http://106.13.96.60:8888/star/publish")
+                .file("images", img_path)
+                .params("content", text)
+                .loader(context)
+                .success(response -> {
+                    //始终会成功
+                    Gson gson = new Gson();
+                    ExampleCreate exampleCreate = gson.fromJson(response, ExampleCreate.class);
+                    int code = exampleCreate.getCode();
+                    if (code == 200) {
+                        Toast.makeText(context, "成功！", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .failure(() -> Toast.makeText(context, "Failure", Toast.LENGTH_SHORT).show())
+                .error((code, msg) -> Toast.makeText(context, "Error: " + msg, Toast.LENGTH_SHORT).show())
+                .build()
+                .postWithFilesWithToken();
     }
 }
