@@ -7,18 +7,21 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 public class UserCollectionHelper extends SQLiteOpenHelper {
-    private static final String TAG = "UserCollectionHelper";
+    public static final String TABLE_NAME = "UserCollection";
+    public static final String ID = "id";
+    public static final String CONTENT = "content";
+    public static final String IMAGE = "image";
     //数据库建表语句
-    private static final String sql_create = "create table UserCollection (id text primary key, content text, image text)";
+    private static final String sql_create = "create table "+TABLE_NAME+" ("+ID+" text primary key, "+CONTENT+" text, "+IMAGE+" text)";
     public UserCollectionHelper(@Nullable Context context) {
-        super(context, "UserCollection", null, 1);//创建数据库调用方法
+        super(context, TABLE_NAME, null, 1);//创建数据库调用方法
     }
     /**
      * 第一次创建数据库时调用
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG, "onCreate: " );
+        Log.i(TABLE_NAME, "onCreate: " );
         db.execSQL(sql_create);
     }
     /**

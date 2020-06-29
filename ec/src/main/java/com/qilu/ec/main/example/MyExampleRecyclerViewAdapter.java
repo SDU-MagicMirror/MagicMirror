@@ -1,6 +1,8 @@
 package com.qilu.ec.main.example;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.ec.R;
+import com.qilu.core.util.storage.UserCollectionHelper;
 import com.qilu.ec.main.sample.ExampleItem;
 
 import java.util.List;
@@ -59,7 +62,15 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
 
     @Override
     public void onClick(View v) {
-        // TODO 将id,图和文字三个数据放到一个数据对象json存到本地缓存文件中，json对象可以沿用sample.ExampleItem类（将其中的Drawable改为String即可）
+        // TODO 将id,图和文字三个数据放到一个数据库，对象可以沿用sample.ExampleItem类（将其中的Drawable改为String即可）
+        UserCollectionHelper userCollectionHelper = new UserCollectionHelper(this.context);
+        SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name","小红");
+        values.put("class","一年级");
+        values.put("year",7);
+        values.put("grade",100);
+        db.insert(UserCollectionHelper.TABLE_NAME,null,values);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
