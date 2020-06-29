@@ -36,7 +36,6 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
 
     private CircleImageView user_img;
     private TextView text_name;
-    private TextView text_honor;
 
     private RelativeLayout star;
     private RelativeLayout history;
@@ -58,7 +57,6 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
         optionImage.setOnClickListener(this);
         user_img = rootView.findViewById(R.id.user_img);
         text_name = rootView.findViewById(R.id.text_name);
-        text_honor = rootView.findViewById(R.id.text_honor);
         star = rootView.findViewById(R.id.star);
         history = rootView.findViewById(R.id.history);
         upload = rootView.findViewById(R.id.upload);
@@ -81,7 +79,6 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
                         if (data != null) {
                             Image.showResultImage(data.getAvatar(), user_img);
                             text_name.setText(data.getUserName());
-                            text_honor.setText(data.getSignature());
                         } else {
                             Log.e("data", "用户信息为空！");
                             Toast.makeText(getContext(), "用户信息获取失败！", Toast.LENGTH_SHORT).show();
@@ -121,11 +118,49 @@ public class UserDelegate extends BottomItemDelegate implements View.OnClickList
     }
 
     private void changeToOption() {
-        getParentDelegate().getSupportDelegate().start(new OptionDelegate(context, data));
+        getParentDelegate().getSupportDelegate().start(new OptionDelegate(context, data,this));
     }
 
     private List<String> getImageHistoryList() {
         // TODO 从本地获取图片和时间列表，传入adapter中
         return null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        RestClient.builder()
+                .url("/account")
+                .loader(getContext())
+                .success(new ISuccess() {
+                    @Override
+                    public void onSuccess(String response) {
+//                        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+                        Gson gson = new Gson();
+                        UserProfile userProfile = gson.fromJson(response, UserProfile.class);
+                        data = userProfile.getData().getData();
+                        if (data != null) {
+                            Image.showResultImage(data.getAvatar(), user_img);
+                            text_name.setText(data.getUserName());
+                        } else {
+                            Log.e("data", "用户信息为空！");
+                            Toast.makeText(getContext(), "用户信息获取失败！", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .failure(new IFailure() {
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(getContext(), "请求失败", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .error(new IError() {
+                    @Override
+                    public void onError(int code, String msg) {
+                        Toast.makeText(getContext(), "请求失败，" + code + "，" + msg, Toast.LENGTH_LONG).show();
+                    }
+                })
+                .build()
+                .getNoParamsWithToken();
     }
 }
