@@ -113,7 +113,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
 
     private void uploadImg(String img_path) {
         RestClient.builder()
-                .url("http://106.13.96.60:8888/user/28/update_avatar")
+                .url("http://106.13.96.60:8888/user/"+QiluPreference.getCustomAppProfile("userID")+"/update_avatar")
                 .loader(getContext())
                 .file("avatar", img_path)
                 .success(response -> {

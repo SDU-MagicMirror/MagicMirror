@@ -16,8 +16,10 @@ public class AccountManager {
             JSONObject jsonObject = JSONObject.parseObject(response);
             JSONObject data = jsonObject.getJSONObject("data");
             String token = data.getString("token");
+            String userID = data.getString("userID");
             QiluPreference.addCustomAppProfile("password",pwd);
             QiluPreference.addCustomAppProfile("phone",phone);
+            QiluPreference.addCustomAppProfile("userID",userID);
             QiluPreference.addCustomAppProfile("token", token);
 
         }
