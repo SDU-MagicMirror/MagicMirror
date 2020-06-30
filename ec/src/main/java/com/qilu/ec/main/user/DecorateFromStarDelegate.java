@@ -312,11 +312,15 @@ public class DecorateFromStarDelegate extends QiluDelegate implements View.OnCli
     @Override
     public void onDestroy() {
         super.onDestroy();
-        File file = new File(img_1_path);
-        if (file.exists())
-            file.delete();
-        file = new File(img_2_path);
-        if (file.exists())
-            file.delete();
+        if (img_1_path != null && (!img_1_path.isEmpty())) {
+            File file = new File(img_1_path);
+            if (file.exists())
+                file.delete();
+        }
+        if (img_2_path != null && (!img_2_path.isEmpty())) {
+            File file = new File(img_2_path);
+            if (file.exists())
+                file.delete();
+        }
     }
 }
