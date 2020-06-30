@@ -58,12 +58,7 @@ public class LauncherDelegate extends QiluDelegate implements ITimerListener {
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
         initTimer();
         mTvTimer = $(R.id.tv_launcher_timer);
-        $(R.id.tv_launcher_timer).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickTimerView();
-            }
-        });
+        $(R.id.tv_launcher_timer).setOnClickListener(view -> onClickTimerView());
     }
 
 
@@ -92,18 +87,15 @@ public class LauncherDelegate extends QiluDelegate implements ITimerListener {
 
     @Override
     public void onTimer() {
-        getProxyActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mTvTimer != null) {
-                    mTvTimer.setText(MessageFormat.format("跳过\n{0}s", mCount));
-                    mCount--;
-                    if (mCount < 0) {
-                        if (mTimer != null) {
-                            mTimer.cancel();
-                            mTimer = null;
-                            checkIsShowScroll();
-                        }
+        getProxyActivity().runOnUiThread(() -> {
+            if (mTvTimer != null) {
+                mTvTimer.setText(MessageFormat.format("跳过\n{0}s", mCount));
+                mCount--;
+                if (mCount < 0) {
+                    if (mTimer != null) {
+                        mTimer.cancel();
+                        mTimer = null;
+                        checkIsShowScroll();
                     }
                 }
             }

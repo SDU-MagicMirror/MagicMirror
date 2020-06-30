@@ -2,6 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidStudioProjects-MagicMirror.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidStudioProjects-MagicMirror.iml" group="MagicMirror" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/annotations/AndroidStudioProjects-MagicMirror-annotations.iml" filepath="$PROJECT_DIR$/.idea/modules/annotations/AndroidStudioProjects-MagicMirror-annotations.iml" group="MagicMirror/annotations" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects-MagicMirror-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects-MagicMirror-app.iml" group="MagicMirror/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/compiler/AndroidStudioProjects-MagicMirror-compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/compiler/AndroidStudioProjects-MagicMirror-compiler.iml" group="MagicMirror/compiler" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/AndroidStudioProjects-MagicMirror-core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/AndroidStudioProjects-MagicMirror-core.iml" group="MagicMirror/core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ec/AndroidStudioProjects-MagicMirror-ec.iml" filepath="$PROJECT_DIR$/.idea/modules/ec/AndroidStudioProjects-MagicMirror-ec.iml" group="MagicMirror/ec" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ui/AndroidStudioProjects-MagicMirror-ui.iml" filepath="$PROJECT_DIR$/.idea/modules/ui/AndroidStudioProjects-MagicMirror-ui.iml" group="MagicMirror/ui" />
       <module fileurl="file://$PROJECT_DIR$/.idea/MagicMirror.iml" filepath="$PROJECT_DIR$/.idea/MagicMirror.iml" group="MagicMirror" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/annotations/MagicMirror-annotations.iml" filepath="$PROJECT_DIR$/.idea/modules/annotations/MagicMirror-annotations.iml" group="MagicMirror/annotations" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MagicMirror-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MagicMirror-app.iml" group="MagicMirror/app" />

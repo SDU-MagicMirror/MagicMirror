@@ -25,59 +25,12 @@ public class UserProfile_Data_Data {
         FollowersNum = followersNum;
     }
 
-    public int getUserID() {
-        return UserID;
-    }
-
-    public void setUserID(int userID) {
-        UserID = userID;
-    }
-
     public String getUserName() {
         return UserName;
-    }
-
-    public void setUserName(String userName) {
-        UserName = userName;
-    }
-
-    public String getSignature() {
-        return Signature;
-    }
-
-    public void setSignature(String signature) {
-        Signature = signature;
-    }
-
-    public String getPhone() {
-        return Phone;
-    }
-
-    public void setPhone(String phone) {
-        Phone = phone;
     }
 
     public String getAvatar() {
         return Avatar;
     }
 
-    public void setAvatar(String avatar) {
-        Avatar = avatar;
-    }
-
-    public int getFollowingNum() {
-        return FollowingNum;
-    }
-
-    public void setFollowingNum(int followingNum) {
-        FollowingNum = followingNum;
-    }
-
-    public int getFollowersNum() {
-        return FollowersNum;
-    }
-
-    public void setFollowersNum(int followersNum) {
-        FollowersNum = followersNum;
-    }
 }

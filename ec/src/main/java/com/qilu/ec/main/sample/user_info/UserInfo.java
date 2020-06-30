@@ -2,12 +2,10 @@ package com.qilu.ec.main.sample.user_info;
 
 public class UserInfo {
     private int code;
-    private String data;
     private String msg;
 
-    public UserInfo(int code, String data, String msg) {
+    public UserInfo(int code, String msg) {
         this.code = code;
-        this.data = data;
         this.msg = msg;
     }
 
@@ -17,14 +15,6 @@ public class UserInfo {
 
     public void setCode(int code) {
         this.code = code;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
     }
 
     public String getMsg() {

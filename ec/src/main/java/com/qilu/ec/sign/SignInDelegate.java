@@ -10,9 +10,6 @@ import android.widget.Toast;
 import com.qilu.core.delegates.QiluDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.net.RestClient;
-import com.qilu.core.net.callback.IError;
-import com.qilu.core.net.callback.IFailure;
-import com.qilu.core.net.callback.ISuccess;
 
 public class SignInDelegate extends QiluDelegate implements View.OnClickListener {
 
@@ -62,27 +59,14 @@ public class SignInDelegate extends QiluDelegate implements View.OnClickListener
                     .url("/login")
                     .params("phone",phone)
                     .params("password",pwd)
-                    .success(new ISuccess() {
-                        @Override
-                        public void onSuccess(String response) {
-                            SignHandler.onSignIn(phone,pwd,response, mISignListener);
-                        }
-                    })
-                    .failure(new IFailure() {
-                                 @Override
-                                 public void onFailure() {
-                                     Toast.makeText(getContext(), "网络错误",Toast.LENGTH_LONG).show();
-                                 }
-                             }
+                    .success(response -> SignHandler.onSignIn(phone,pwd,response, mISignListener))
+                    .failure(() -> Toast.makeText(getContext(), "网络错误",Toast.LENGTH_LONG).show()
                     )
-                    .error(new IError() {
-                        @Override
-                        public void onError(int code, String msg) {
-                            if(code == 400){
-                                Toast.makeText(getContext(), "当前手机号尚未注册或密码错误", Toast.LENGTH_LONG).show();
-                            }else {
-                                Toast.makeText(getContext(), "内部错误："+msg+"，Code："+code, Toast.LENGTH_LONG).show();
-                            }
+                    .error((code, msg) -> {
+                        if(code == 400){
+                            Toast.makeText(getContext(), "当前手机号尚未注册或密码错误", Toast.LENGTH_LONG).show();
+                        }else {
+                            Toast.makeText(getContext(), "内部错误："+msg+"，Code："+code, Toast.LENGTH_LONG).show();
                         }
                     })
                     .loader(getContext())

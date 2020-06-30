@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.ec.R;
@@ -110,8 +109,8 @@ public class MyExampleRecyclerViewAdapter extends RecyclerView.Adapter<MyExample
             super(view);
             this.view = view;
             buttonView = view.findViewById(R.id.button);
-            textView = (TextView) view.findViewById(R.id.text_content);
-            imageView = (ImageView) view.findViewById(R.id.image);
+            textView = view.findViewById(R.id.text_content);
+            imageView = view.findViewById(R.id.image);
         }
     }
 }

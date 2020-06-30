@@ -10,10 +10,6 @@ import android.widget.Toast;
 import com.qilu.core.delegates.QiluDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.net.RestClient;
-import com.qilu.core.net.callback.IError;
-import com.qilu.core.net.callback.IFailure;
-import com.qilu.core.net.callback.ISuccess;
-import java.io.IOException;
 
 
 public class SignUpDelegate extends QiluDelegate implements View.OnClickListener {
@@ -90,12 +86,7 @@ public class SignUpDelegate extends QiluDelegate implements View.OnClickListener
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.btn_sign_up) {
-            try {
-                onClickSignUp();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+            onClickSignUp();
         }
         else if (i == R.id.tv_link_sign_in) {
             onClickLink();
@@ -104,7 +95,7 @@ public class SignUpDelegate extends QiluDelegate implements View.OnClickListener
     private void onClickLink() {
         getSupportDelegate().startWithPop(new SignInDelegate());
     }
-    private void onClickSignUp() throws IOException {
+    private void onClickSignUp() {
         final String phone= mPhone.getText().toString();
         final String name= mName.getText().toString();
         final String pwd=mPassword.getText().toString();
@@ -114,26 +105,13 @@ public class SignUpDelegate extends QiluDelegate implements View.OnClickListener
                     .params("phone", phone)
                     .params("name", name)
                     .params("password", pwd)
-                    .success(new ISuccess() {
-                        @Override
-                        public void onSuccess(String response) {
-                            SignHandler.onSignUp(response, mISignListener);
-                        }
-                    })
-                    .failure(new IFailure() {
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(getContext(),"网络错误",Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .error(new IError() {
-                        @Override
-                        public void onError(int code, String msg) {
-                            if(code == 422){
-                                Toast.makeText(getContext(), "重复注册，请登录", Toast.LENGTH_LONG).show();
-                            }else {
-                                Toast.makeText(getContext(), "内部错误："+msg+"，Code："+code, Toast.LENGTH_LONG).show();
-                            }
+                    .success(response -> SignHandler.onSignUp(response, mISignListener))
+                    .failure(() -> Toast.makeText(getContext(),"网络错误",Toast.LENGTH_LONG).show())
+                    .error((code, msg) -> {
+                        if(code == 422){
+                            Toast.makeText(getContext(), "重复注册，请登录", Toast.LENGTH_LONG).show();
+                        }else {
+                            Toast.makeText(getContext(), "内部错误："+msg+"，Code："+code, Toast.LENGTH_LONG).show();
                         }
                     })
                     .loader(getContext())

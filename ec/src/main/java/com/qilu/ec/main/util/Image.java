@@ -47,9 +47,6 @@ public class Image {
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             circleImageView.setImageBitmap(bitmap);
 
-            //自动缩放
-//            circleImageView.setScaleType(CircleImageView.ScaleType.FIT_XY);
-//            circleImageView.setAdjustViewBounds(true);
         }
     }
 
@@ -57,8 +54,6 @@ public class Image {
     /**
      * 将bitmap转为base64格式的字符串
      *
-     * @param bit 传入的bitmap
-     * @return
      */
     public static String BitmapToStrByBase64(Bitmap bit) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -72,8 +67,7 @@ public class Image {
      */
     public static Bitmap drawableToBitmap(Drawable img) {
         BitmapDrawable bd = (BitmapDrawable) img;
-        Bitmap bitmap = bd.getBitmap();
-        return bitmap;
+        return bd.getBitmap();
     }
 
     /**
@@ -90,8 +84,6 @@ public class Image {
             byte[] bytes = new byte[in.available()];
             int length = in.read(bytes);
             base64 = Base64.encodeToString(bytes, 0, length, Base64.DEFAULT);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

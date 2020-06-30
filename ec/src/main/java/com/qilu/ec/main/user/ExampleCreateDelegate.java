@@ -19,9 +19,6 @@ import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.delegates.QiluDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.net.RestClient;
-import com.qilu.core.net.callback.IError;
-import com.qilu.core.net.callback.IFailure;
-import com.qilu.core.net.callback.ISuccess;
 import com.qilu.core.util.callback.CallbackManager;
 import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
@@ -32,12 +29,9 @@ import com.qilu.ui.image.GlideTools;
 import java.util.Objects;
 
 public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickListener {
-    private IconTextView button_1;  //添加图片按钮
-    private Button button;          //发表按钮
     private EditText editText;      //文字输入框
     private ImageView imageView;    //图片区域
 
-    private String text;//文本内容
     private String img_1_path;//图片路径
     private ISignListener mISignListener = null;
 
@@ -56,9 +50,11 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
-        button_1 = rootView.findViewById(R.id.button_1);
+        //添加图片按钮
+        IconTextView button_1 = rootView.findViewById(R.id.button_1);
         button_1.setOnClickListener(this);
-        button = rootView.findViewById(R.id.button);
+        //发表按钮
+        Button button = rootView.findViewById(R.id.button);
         button.setOnClickListener(this);
         editText = rootView.findViewById(R.id.text);
         imageView = rootView.findViewById(R.id.only_img);
@@ -70,20 +66,18 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
         if (v.getId() == R.id.button_1) {
             //拍照
             ExampleCreateDelegate temp = this;
-            CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
-                @Override
-                public void executeCallback(@Nullable Uri args) {
-                    // args是照片保存在硬盘上的地址
-                    if (args != null) {
-                        img_1_path = args.getPath();
-                        GlideTools.showImagewithGlide(temp, img_1_path, (ImageView) $(R.id.only_img));
-                    }
+            CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, (IGlobalCallback<Uri>) args -> {
+                // args是照片保存在硬盘上的地址
+                if (args != null) {
+                    img_1_path = args.getPath();
+                    GlideTools.showImagewithGlide(temp, img_1_path, $(R.id.only_img));
                 }
             });
             startCameraWithCheck();
         }
         else if (v.getId() == R.id.button) {
-            text = String.valueOf(editText.getText());
+            //文本内容
+            String text = String.valueOf(editText.getText());
             if (text == null || text.trim().equals("")) {
                 new AlertDialog.Builder(Objects.requireNonNull(getContext()))
                         .setTitle("错误")
@@ -106,7 +100,7 @@ public class ExampleCreateDelegate extends QiluDelegate implements View.OnClickL
             Toast.makeText(getContext(), "假装上传", Toast.LENGTH_SHORT).show();
         }
         else if (v.getId() == R.id.only_img) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
             builder.setTitle(null);
             builder.setMessage("确定移除？");
             builder.setPositiveButton("是", (dialog, which) -> {

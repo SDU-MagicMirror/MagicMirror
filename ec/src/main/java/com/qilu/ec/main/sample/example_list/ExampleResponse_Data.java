@@ -1,7 +1,5 @@
 package com.qilu.ec.main.sample.example_list;
 
-import com.qilu.ec.main.sample.example_create.ExampleCreate_Data;
-
 public class ExampleResponse_Data {
     private ExampleResponse_Data_Star[] stars;
 
@@ -13,7 +11,4 @@ public class ExampleResponse_Data {
         return stars;
     }
 
-    public void setStars(ExampleResponse_Data_Star[] stars) {
-        this.stars = stars;
-    }
 }

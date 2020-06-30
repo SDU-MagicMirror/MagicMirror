@@ -20,9 +20,6 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 
 import java.util.ArrayList;
 
-/**
- * Created by 傅令杰 on 2017/4/22
- */
 
 public class LauncherScrollDelegate extends QiluDelegate implements OnItemClickListener {
 

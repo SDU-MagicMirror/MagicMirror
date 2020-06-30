@@ -1,6 +1,5 @@
 package com.qilu.ec.main.sample;
 
-import android.graphics.drawable.Drawable;
 
 /**
  * A dummy item representing a piece of content.

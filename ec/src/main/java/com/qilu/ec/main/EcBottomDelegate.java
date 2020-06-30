@@ -1,6 +1,5 @@
 package com.qilu.ec.main;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,21 +11,10 @@ import com.qilu.core.delegates.bottom.ItemBuilder;
 import com.qilu.ec.main.example.ExampleDelegate;
 import com.qilu.ec.main.decorate.DecorateDelegate;
 import com.qilu.ec.main.user.UserDelegate;
-import com.qilu.ec.sign.ISignListener;
 
 import java.util.LinkedHashMap;
 
 public class EcBottomDelegate extends BaseBottomDelegate {
-
-    private ISignListener mISignListener = null;
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (activity instanceof ISignListener) {
-            mISignListener = (ISignListener) activity;
-        }
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +27,7 @@ public class EcBottomDelegate extends BaseBottomDelegate {
         final LinkedHashMap<BottomTabBean, BottomItemDelegate> items = new LinkedHashMap<>();
         items.put(new BottomTabBean("{fa-flag-o}", "示例榜"),new ExampleDelegate());
         items.put(new BottomTabBean("{fa-magic}", "上妆"), new DecorateDelegate());
-        items.put(new BottomTabBean("{fa-user}","我"),new UserDelegate(getProxyActivity()));
+        items.put(new BottomTabBean("{fa-user}","我"),new UserDelegate());
         return builder.addItems(items).build();
     }
 

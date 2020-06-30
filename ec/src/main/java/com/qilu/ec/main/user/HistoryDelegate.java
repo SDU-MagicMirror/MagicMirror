@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,18 +15,13 @@ import android.view.View;
 import com.qilu.core.delegates.QiluDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.util.storage.ImageHistoryHelper;
-import com.qilu.core.util.storage.UserCollectionHelper;
-import com.qilu.ec.main.example.MyExampleRecyclerViewAdapter;
 import com.qilu.ec.main.sample.DecorateHistory;
-import com.qilu.ec.main.sample.ExampleItem;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 @SuppressLint("ValidFragment")
 public class HistoryDelegate extends QiluDelegate {
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     RecyclerView recyclerView;
 
     @Override
@@ -40,12 +34,7 @@ public class HistoryDelegate extends QiluDelegate {
         recyclerView = rootView.findViewById(R.id.list);
         if (recyclerView != null) {
             Context context = rootView.getContext();
-//            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             requestDatas();
         }
     }
@@ -54,8 +43,9 @@ public class HistoryDelegate extends QiluDelegate {
     private void requestDatas() {
         ImageHistoryHelper imageHistoryHelper = new ImageHistoryHelper(getContext());
         SQLiteDatabase db = imageHistoryHelper.getWritableDatabase();
-        ArrayList<DecorateHistory> decorateHistories = new ArrayList<DecorateHistory>();
+        ArrayList<DecorateHistory> decorateHistories = new ArrayList<>();
         //查找
+        @SuppressLint("Recycle")
         Cursor cursor = db.query(ImageHistoryHelper.TABLE_NAME, null, null, null, null, null, null);
         Log.i("本地数据库条数", String.valueOf(cursor.getCount()));
         if (cursor.getCount() > 0) {
@@ -70,8 +60,10 @@ public class HistoryDelegate extends QiluDelegate {
                         ));
                 cursor.moveToNext();
             }
+            Collections.reverse(decorateHistories);
             Log.i("size大小", String.valueOf(decorateHistories.size()));
             recyclerView.setAdapter(new HistoryRecyclerViewAdapter(getContext(), decorateHistories));
         }
+        db.close();
     }
 }

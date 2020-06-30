@@ -1,41 +1,32 @@
 package com.qilu.ec.main.example;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.net.RestClient;
-import com.qilu.core.net.callback.IError;
 import com.qilu.core.util.storage.UserCollectionHelper;
 import com.qilu.ec.main.sample.ExampleItem;
 import com.qilu.ec.main.sample.example_list.ExampleResponse;
 import com.qilu.ec.main.sample.example_list.ExampleResponse_Data_Star;
-import com.qilu.ec.main.sample.user_info.UserInfo;
 import com.qilu.ec.sign.ISignListener;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 public class ExampleDelegate extends BottomItemDelegate implements View.OnClickListener {
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
 
     private RecyclerView recyclerView;
     private ISignListener mISignListener = null;
@@ -56,20 +47,15 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
-        View view = rootView;
-        recyclerView = view.findViewById(R.id.list);
+        recyclerView = rootView.findViewById(R.id.list);
         if (recyclerView != null) {
-            Context context = view.getContext();
-//            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            Context context = rootView.getContext();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
             //请求数据
             requestDatas();
         }
-        IconTextView refresh = view.findViewById(R.id.refresh);
+        IconTextView refresh = rootView.findViewById(R.id.refresh);
         refresh.setOnClickListener(this);
     }
 
@@ -79,11 +65,10 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
     }
 
 
-    // TODO 小Bug：加载条不显示
     private void requestDatas() {
         RestClient.builder()
                 .url("http://106.13.96.60:8888/star/all")
-                .loader(getContext())
+                .loader(getProxyActivity())
                 .success(response -> {
                     Gson gson = new Gson();
                     ExampleResponse exampleResponse = gson.fromJson(response, ExampleResponse.class);
@@ -116,7 +101,7 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
     private ArrayList<ExampleItem> generateExampleItem(ExampleResponse_Data_Star[] stars) {
         UserCollectionHelper userCollectionHelper = new UserCollectionHelper(getContext());
         SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
-        ArrayList<ExampleItem> exampleItems = new ArrayList<ExampleItem>();
+        ArrayList<ExampleItem> exampleItems = new ArrayList<>();
         //查找
         Cursor cursor = db.query(UserCollectionHelper.TABLE_NAME, null, null, null, null, null, null);
         Log.i("本地数据库条数", String.valueOf(cursor.getCount()));
@@ -159,6 +144,7 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
                 exampleItems.add(exampleItem);
             }
             if (hasCheck == allNum) {
+
                 //说明已经查完了但还没有到末尾
                 for (; i < stars.length; i++) {
                     exampleItems.add(new ExampleItem(stars[i].getID(), stars[i].getContent(), stars[i].getImages(), false));//剩余的设为false
@@ -166,14 +152,14 @@ public class ExampleDelegate extends BottomItemDelegate implements View.OnClickL
             }
         } else {
             //正常插入即可
-            for (int i = 0; i < stars.length; i++) {
-                exampleItems.add(new ExampleItem(stars[i].getID(), stars[i].getContent(), stars[i].getImages(), false));
+            for (ExampleResponse_Data_Star star : stars) {
+                exampleItems.add(new ExampleItem(star.getID(), star.getContent(), star.getImages(), false));
             }
             Log.i("exampleItems的最终size", String.valueOf(exampleItems.size()));
         }
         cursor.close();
         db.close();
-
+        Collections.reverse(exampleItems);
         return exampleItems;
     }
 

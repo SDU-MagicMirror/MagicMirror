@@ -23,10 +23,6 @@ public class UserProfile {
         return data;
     }
 
-    public void setData(UserProfile_Data data) {
-        this.data = data;
-    }
-
     public String getMsg() {
         return msg;
     }

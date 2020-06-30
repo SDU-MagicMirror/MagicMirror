@@ -1,7 +1,6 @@
 package com.qilu.ec.main.user;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,62 +39,50 @@ public class StarRecyclerViewAdapter extends RecyclerView.Adapter<StarRecyclerVi
     public void onBindViewHolder(final ViewHolder holder, int position) {
         ExampleItem exampleItem = mValues.get(position);
         holder.textView.setText(exampleItem.getContent());
-//        holder.imageView.setImageDrawable(exampleItem.getImage());
         Image.showResultImage(exampleItem.getImage(), holder.imageView);
         holder.isSaved = exampleItem.getSaved();
-        holder.button3View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Image.saveImageToGallery(starDelegate.getContext(), Image.base64ToBitmap(exampleItem.getImage()));
-                Toast.makeText(starDelegate.getContext(), "保存成功", Toast.LENGTH_SHORT).show();
-            }
+        holder.button3View.setOnClickListener(v -> {
+            Image.saveImageToGallery(starDelegate.getContext(), Image.base64ToBitmap(exampleItem.getImage()));
+            Toast.makeText(starDelegate.getContext(), "保存成功", Toast.LENGTH_SHORT).show();
         });
-        holder.button2View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UserCollectionHelper userCollectionHelper = new UserCollectionHelper(starDelegate.getContext());
-                SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
-                if (exampleItem.getSaved()) {
-                    //已收藏
-                    Log.i("是否收藏", "是->否");
-                    int result = db.delete(UserCollectionHelper.TABLE_NAME, UserCollectionHelper.ID + "=?", new String[]{exampleItem.getId()});
-                    if (result > 0) {
-                        // 成功
-                        ((IconTextView) v).setText(R.string.starToPlus);
-                        exampleItem.setSaved(false);
-                    }
-                } else {
-                    //未收藏
-                    Log.i("是否收藏", "否->是");
-                    String id = exampleItem.getId();
-                    Log.i("收藏的ID", id);
-                    String content = exampleItem.getContent();
-                    //假设接口的图片是Base64字符串
-                    String img_base64;
-                    img_base64 = exampleItem.getImage();
-                    // 示例
+        holder.button2View.setOnClickListener(v -> {
+            UserCollectionHelper userCollectionHelper = new UserCollectionHelper(starDelegate.getContext());
+            SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
+            if (exampleItem.getSaved()) {
+                //已收藏
+                Log.i("是否收藏", "是->否");
+                int result = db.delete(UserCollectionHelper.TABLE_NAME, UserCollectionHelper.ID + "=?", new String[]{exampleItem.getId()});
+                if (result > 0) {
+                    // 成功
+                    ((IconTextView) v).setText(R.string.starToPlus);
+                    exampleItem.setSaved(false);
+                }
+            } else {
+                //未收藏
+                Log.i("是否收藏", "否->是");
+                String id = exampleItem.getId();
+                Log.i("收藏的ID", id);
+                String content = exampleItem.getContent();
+                //假设接口的图片是Base64字符串
+                String img_base64;
+                img_base64 = exampleItem.getImage();
+                // 示例
 
-                    ContentValues values = new ContentValues();
-                    values.put(UserCollectionHelper.ID, id);
-                    values.put(UserCollectionHelper.CONTENT, content);
-                    values.put(UserCollectionHelper.IMAGE, img_base64);
+                ContentValues values = new ContentValues();
+                values.put(UserCollectionHelper.ID, id);
+                values.put(UserCollectionHelper.CONTENT, content);
+                values.put(UserCollectionHelper.IMAGE, img_base64);
 
-                    long result = db.insert(UserCollectionHelper.TABLE_NAME, null, values);
-                    if (result > 0) {
-                        // 成功
-                        exampleItem.setSaved(true);
-                        ((IconTextView) v).setText(R.string.starPlused);
-                        exampleItem.setSaved(true);
-                    }
+                long result = db.insert(UserCollectionHelper.TABLE_NAME, null, values);
+                if (result > 0) {
+                    // 成功
+                    exampleItem.setSaved(true);
+                    ((IconTextView) v).setText(R.string.starPlused);
+                    exampleItem.setSaved(true);
                 }
             }
         });
-        holder.buttonView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                starDelegate.getSupportDelegate().start(new DecorateFromStarDelegate(exampleItem.getImage()));
-            }
-        });
+        holder.buttonView.setOnClickListener(v -> starDelegate.getSupportDelegate().start(new DecorateFromStarDelegate(exampleItem.getImage())));
     }
 
     @Override

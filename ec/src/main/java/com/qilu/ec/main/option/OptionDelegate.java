@@ -2,8 +2,6 @@ package com.qilu.ec.main.option;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,7 +31,6 @@ import java.util.Objects;
 
 @SuppressLint("ValidFragment")
 public class OptionDelegate extends QiluDelegate implements View.OnClickListener {
-    private Context context;
     private UserProfile_Data_Data data; //用户当前信息
 
     private TextView name;
@@ -53,8 +50,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
     }
 
     @SuppressLint("ValidFragment")
-    public OptionDelegate(Context context, UserProfile_Data_Data data, UserDelegate userDelegate) {
-        this.context = context;
+    public OptionDelegate(UserProfile_Data_Data data, UserDelegate userDelegate) {
         this.data = data;
         this.userDelegate = userDelegate;
     }
@@ -99,41 +95,22 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         dialog.setTitle("确认");
         dialog.setMessage("确认退出当前账号？");
         dialog.setCancelable(true);
-        dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mISignListener.onTokenExpired();
-            }
-        });
-        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        dialog.setPositiveButton("确认", (dialog1, which) -> mISignListener.onTokenExpired());
+        dialog.setNegativeButton("取消", (dialog12, which) -> dialog12.dismiss());
         dialog.show();
     }
 
     private void changeImg() {
-        OptionDelegate temp = this;
-        CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
-            @Override
-            public void executeCallback(@Nullable Uri args) {
-                // args是照片保存在硬盘上的地址
-                if (args != null) {
-                    String img_1_path = args.getPath();
-                    uploadImg(img_1_path);
-                }
+        CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, (IGlobalCallback<Uri>) args -> {
+            // args是照片保存在硬盘上的地址
+            if (args != null) {
+                String img_1_path = args.getPath();
+                uploadImg(img_1_path);
             }
         });
         startCameraWithCheck();
     }
 
-    /**
-     * 将路径img_path的图片上传
-     *
-     * @param img_path
-     */
     private void uploadImg(String img_path) {
         RestClient.builder()
                 .url("http://106.13.96.60:8888/user/28/update_avatar")
@@ -161,7 +138,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
     }
 
     private void showPasswordDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.password_dialog, null, false);
         dialog.setView(view);
         EditText edit_old_password = view.findViewById(R.id.edit_old_password);
@@ -182,9 +159,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
                 dialog2.setTitle("信息错误");
                 dialog2.setMessage("原密码不对!");
                 dialog2.setCancelable(true);
-                dialog2.setPositiveButton("确定", (dialog3, which1) -> {
-                    dialog3.dismiss();
-                });
+                dialog2.setPositiveButton("确定", (dialog3, which1) -> dialog3.dismiss());
                 dialog2.show();
             } else if (!newPassword.equals(surePassword)) {
                 //新密码和确认新密码不对
@@ -192,9 +167,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
                 dialog2.setTitle("信息错误");
                 dialog2.setMessage("新密码确认错误!");
                 dialog2.setCancelable(true);
-                dialog2.setPositiveButton("确定", (dialog3, which1) -> {
-                    dialog3.dismiss();
-                });
+                dialog2.setPositiveButton("确定", (dialog3, which1) -> dialog3.dismiss());
                 dialog2.show();
             } else {
                 Log.i("password", "changed");
@@ -213,10 +186,11 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
                                 mISignListener.onTokenExpired();
                             }
                             if (code == 200) {    //TODO 感觉code一般应该一定是200
-                                Toast.makeText(getContext(), "更新成功", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "更新成功，请重新登录", Toast.LENGTH_SHORT).show();
                                 QiluPreference.addCustomAppProfile("password", newPassword);    // TODO 直接修改不知道会不会有Bug
                                 userDelegate.onResume();
                                 dialog1.dismiss();
+                                mISignListener.onTokenExpired();
                             }
                         })
                         .error((code, msg) -> {
@@ -238,7 +212,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
 
 
     private void showNameDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.name_dialog, null, false);
         dialog.setView(view);
         EditText name = view.findViewById(R.id.edit_old_password);
@@ -249,34 +223,39 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         dialog.setPositiveButton("确定", (dialog1, which) -> {
             //关闭对话框
             String newName = String.valueOf(name.getText());
-            // TODO 提交修改昵称
-            RestClient.builder()
-                    .url("http://106.13.96.60:8888/account/update")
-                    .loader(getContext())
-                    .params("phone", QiluPreference.getCustomAppProfile("phone"))    //TODO 此处获取phone和password的方法不知道会不会产生Bug
-                    .params("password", QiluPreference.getCustomAppProfile("password"))
-                    .params("name", newName)
-                    .params("signature", "")
-                    .success(response -> {
-                        Gson gson = new Gson();
-                        UserInfo userInfo = gson.fromJson(response, UserInfo.class);
-                        int code = userInfo.getCode();
-                        if (code == 401) {
-                            mISignListener.onTokenExpired();
-                        } else if (code == 200) {    //TODO 感觉code一般应该一定是200
-                            Toast.makeText(getContext(), "更新成功", Toast.LENGTH_SHORT).show();
-                            userDelegate.onResume();
-                        }
-                    })
-                    .error((code, msg) -> {
-                        if (code == 401) {
-                            //Token失效
-                            mISignListener.onTokenExpired();
-                        }
-                    })
-                    .build()
-                    .postRawWithToken();
-            dialog1.dismiss();
+            if(!newName.trim().isEmpty()) {
+                // TODO 提交修改昵称
+                RestClient.builder()
+                        .url("http://106.13.96.60:8888/account/update")
+                        .loader(getContext())
+                        .params("phone", QiluPreference.getCustomAppProfile("phone"))    //TODO 此处获取phone和password的方法不知道会不会产生Bug
+                        .params("password", QiluPreference.getCustomAppProfile("password"))
+                        .params("name", newName)
+                        .params("signature", "")
+                        .success(response -> {
+                            Gson gson = new Gson();
+                            UserInfo userInfo = gson.fromJson(response, UserInfo.class);
+                            int code = userInfo.getCode();
+                            if (code == 401) {
+                                mISignListener.onTokenExpired();
+                            } else if (code == 200) {    //TODO 感觉code一般应该一定是200
+                                Toast.makeText(getContext(), "更新成功", Toast.LENGTH_SHORT).show();
+                                userDelegate.onResume();
+                                dialog1.dismiss();
+                            }
+                        })
+                        .error((code, msg) -> {
+                            if (code == 401) {
+                                //Token失效
+                                mISignListener.onTokenExpired();
+                            }
+                        })
+                        .build()
+                        .postRawWithToken();
+            }
+            else{
+                Toast.makeText(getContext(), "不能为空", Toast.LENGTH_SHORT).show();
+            }
         });
         dialog.setNegativeButton("取消", (dialog12, which) -> {
             //关闭对话框

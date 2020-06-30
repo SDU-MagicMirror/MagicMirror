@@ -1,9 +1,7 @@
 package com.qilu.ec.main.decorate;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,24 +17,16 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.net.RestClient;
-import com.qilu.core.net.callback.IError;
-import com.qilu.core.net.callback.IFailure;
-import com.qilu.core.net.callback.ISuccess;
 import com.qilu.core.util.callback.CallbackManager;
 import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
 import com.qilu.core.util.storage.ImageHistoryHelper;
-import com.qilu.core.util.storage.UserCollectionHelper;
 import com.qilu.ec.main.util.Image;
-import com.qilu.ec.sign.ISignListener;
 import com.qilu.ui.image.GlideTools;
-
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -48,8 +38,6 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     private IconTextView button_2;
     private IconTextView result_button;
     private String result_img_base64;
-    private ImageView img;
-    private ImageView img_2;
     private DiscreteSlider value;
     private RadioGroup radio_group;
     private RadioButton radioButton;
@@ -78,29 +66,26 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     @SuppressLint("HandlerLeak")
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
-        View view = rootView;
-        button_1 = view.findViewById(R.id.button_1);
-        button_2 = view.findViewById(R.id.button_2);
-        result_button = view.findViewById(R.id.result_button);
+        button_1 = rootView.findViewById(R.id.button_1);
+        button_2 = rootView.findViewById(R.id.button_2);
+        result_button = rootView.findViewById(R.id.result_button);
         result_img_base64 = null;
-        img = view.findViewById(R.id.img);
-        img_2 = view.findViewById(R.id.img_2);
-        value = view.findViewById(R.id.value);
-        radio_group = view.findViewById(R.id.radio_group);
+        value = rootView.findViewById(R.id.value);
+        radio_group = rootView.findViewById(R.id.radio_group);
         radio_1 = R.id.radio_1;
         radio_2 = R.id.radio_2;
-        radioButton = view.findViewById(radio_1);
-        radioButton_2 = view.findViewById(radio_2);
+        radioButton = rootView.findViewById(radio_1);
+        radioButton_2 = rootView.findViewById(radio_2);
         radioButton.setChecked(true);
-        check_1 = view.findViewById(R.id.check_1);
-        check_2 = view.findViewById(R.id.check_2);
-        check_3 = view.findViewById(R.id.check_3);
+        check_1 = rootView.findViewById(R.id.check_1);
+        check_2 = rootView.findViewById(R.id.check_2);
+        check_3 = rootView.findViewById(R.id.check_3);
         checkAll = true;
         checkAll();
-        submit = view.findViewById(R.id.submit);
+        submit = rootView.findViewById(R.id.submit);
 
-        resultLayout = view.findViewById(R.id.resultLayout);
-        img_result = view.findViewById(R.id.img_result);
+        resultLayout = rootView.findViewById(R.id.resultLayout);
+        img_result = rootView.findViewById(R.id.img_result);
         resultLayout.setVisibility(View.INVISIBLE);
 
         listenerRegister();
@@ -152,14 +137,11 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
 //            position = POSITION_ONE;
             // 设置拍照后的动作
             DecorateDelegate temp = this;
-            CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
-                @Override
-                public void executeCallback(@Nullable Uri args) {
-                    // args是照片保存在硬盘上的地址
-                    if (args != null) {
-                        img_1_path = args.getPath();
-                        GlideTools.showImagewithGlide(temp, img_1_path, (ImageView) $(R.id.img));
-                    }
+            CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, (IGlobalCallback<Uri>) args -> {
+                // args是照片保存在硬盘上的地址
+                if (args != null) {
+                    img_1_path = args.getPath();
+                    GlideTools.showImagewithGlide(temp, img_1_path, $(R.id.img));
                 }
             });
             startCameraWithCheck();
@@ -169,15 +151,12 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
 
             // 设置拍照后的动作
             DecorateDelegate temp = this;
-            CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
-                @Override
-                public void executeCallback(@Nullable Uri args) {
-                    // args是照片保存在硬盘上的地址
-                    if (args != null) {
-                        img_2_path = args.getPath();
-                        GlideTools.showImagewithGlide(temp, img_2_path, (ImageView) $(R.id.img_2));
+            CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, (IGlobalCallback<Uri>) args -> {
+                // args是照片保存在硬盘上的地址
+                if (args != null) {
+                    img_2_path = args.getPath();
+                    GlideTools.showImagewithGlide(temp, img_2_path, $(R.id.img_2));
 
-                    }
                 }
             });
             startCameraWithCheck();
@@ -239,15 +218,18 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
         if (result > 0) {
             //增加成功
             Log.i("历史记录", "增加");
+            db.close();
             return true;
         } else {
             Log.i("历史记录", "未增加");
+            db.close();
             return false;
         }
     }
 
     private String getTime() {
         Date date = new Date();
+        @SuppressLint("SimpleDateFormat")
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd :hh:mm:ss");
         String time = dateFormat.format(date);
         Log.i("美妆时间", time);
@@ -258,9 +240,9 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
      * 发送网络请求端,返回类型不确定，可能是图片相关类型
      */
     private void sendRequest(@Nullable String image1Path, @Nullable String image2Path, int levelDegree, String[] paramsValues) {
-        Log.i("img1路径", image1Path);
-        Log.i("img2路径", image2Path);
         if (image1Path != null && (!image1Path.isEmpty()) && image2Path != null && (!image2Path.isEmpty())) {
+            Log.i("img1路径", image1Path);
+            Log.i("img2路径", image2Path);
             // levelDegree: [0, 99]
             levelDegree += 1;
             float shade = ((float) levelDegree) / 100.0f;
@@ -275,31 +257,18 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
                     .params(paramsNames[1], paramsValues[1])
                     .params(paramsNames[2], paramsValues[2])
                     .params(paramsNames[3], paramsValues[3])
-                    .success(new ISuccess() {
-                        @Override
-                        public void onSuccess(String response) {
-                            Image.showResultImage(response, img_result);
-                            resultLayout.setVisibility(View.VISIBLE);
-                            result_img_base64 = response;   //用于下载到本地
-                            if (saveHistory(response)) {
-                                Toast.makeText(getContext(), "美妆成功", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getContext(), "记录出错...", Toast.LENGTH_SHORT).show();
-                            }
+                    .success(response -> {
+                        Image.showResultImage(response, img_result);
+                        resultLayout.setVisibility(View.VISIBLE);
+                        result_img_base64 = response;   //用于下载到本地
+                        if (saveHistory(response)) {
+                            Toast.makeText(getContext(), "美妆成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "记录出错...", Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .failure(new IFailure() {
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(getContext(), "请求失败", Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .error(new IError() {
-                        @Override
-                        public void onError(int code, String msg) {
-                            Toast.makeText(getContext(), "请求出错，Msg：" + msg + "\n" + "Code：" + code, Toast.LENGTH_LONG).show();
-                        }
-                    })
+                    .failure(() -> Toast.makeText(getContext(), "请求失败", Toast.LENGTH_LONG).show())
+                    .error((code, msg) -> Toast.makeText(getContext(), "请求出错，Msg：" + msg + "\n" + "Code：" + code, Toast.LENGTH_LONG).show())
                     .loader(getContext())
                     .build()
                     .postWithFiles();

@@ -1,33 +1,25 @@
 package com.qilu.ec.main.user;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
-import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.delegates.QiluDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.util.storage.UserCollectionHelper;
-import com.qilu.ec.main.example.MyExampleRecyclerViewAdapter;
 import com.qilu.ec.main.sample.ExampleItem;
-import com.qilu.ec.main.util.Image;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StarDelegate extends QiluDelegate {
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     RecyclerView recyclerView;
 
     @Override
@@ -37,25 +29,20 @@ public class StarDelegate extends QiluDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
-        View view = rootView;
-        recyclerView = view.findViewById(R.id.list);
+        recyclerView = rootView.findViewById(R.id.list);
         if (recyclerView != null) {
-            Context context = view.getContext();
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            Context context = rootView.getContext();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             requestDatas();
         }
     }
 
-    // TODO 小Bug：加载条不显示
     private void requestDatas() {
         UserCollectionHelper userCollectionHelper = new UserCollectionHelper(getContext());
         SQLiteDatabase db = userCollectionHelper.getWritableDatabase();
-        ArrayList<ExampleItem> exampleItems = new ArrayList<ExampleItem>();
+        ArrayList<ExampleItem> exampleItems = new ArrayList<>();
         //查找
+        @SuppressLint("Recycle")
         Cursor cursor = db.query(UserCollectionHelper.TABLE_NAME, null, null, null, null, null, null);
         Log.i("本地数据库条数", String.valueOf(cursor.getCount()));
         if (cursor.getCount() > 0) {

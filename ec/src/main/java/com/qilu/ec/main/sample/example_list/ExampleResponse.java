@@ -44,10 +44,6 @@ public class ExampleResponse {
         return data;
     }
 
-    public void setData(ExampleResponse_Data data) {
-        this.data = data;
-    }
-
     public String getMsg() {
         return msg;
     }

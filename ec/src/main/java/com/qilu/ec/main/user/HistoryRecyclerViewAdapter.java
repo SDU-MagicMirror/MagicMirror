@@ -1,12 +1,8 @@
 package com.qilu.ec.main.user;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +15,6 @@ import com.qilu.core.ec.R;
 import com.qilu.ec.main.sample.DecorateHistory;
 import com.qilu.ec.main.util.Image;
 
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -45,12 +40,9 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         DecorateHistory decorateHistory = mValues.get(position);
         holder.timeView.setText(decorateHistory.getTime());
         Image.showResultImage(decorateHistory.getImg_base64(), holder.imageView);
-        holder.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Image.saveImageToGallery(context, Image.base64ToBitmap(decorateHistory.getImg_base64()));
-                Toast.makeText(context, "保存成功", Toast.LENGTH_SHORT).show();
-            }
+        holder.button.setOnClickListener(v -> {
+            Image.saveImageToGallery(context, Image.base64ToBitmap(decorateHistory.getImg_base64()));
+            Toast.makeText(context, "保存成功", Toast.LENGTH_SHORT).show();
         });
     }
 
