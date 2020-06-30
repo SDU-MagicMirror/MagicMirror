@@ -53,7 +53,6 @@ public class Image {
 
     /**
      * 将bitmap转为base64格式的字符串
-     *
      */
     public static String BitmapToStrByBase64(Bitmap bit) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -148,6 +147,7 @@ public class Image {
 
     /**
      * base64转为bitmap
+     *
      * @param base64Data
      * @return
      */
@@ -174,16 +174,7 @@ public class Image {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // 其次把文件插入到系统图库
-        try {
-            MediaStore.Images.Media.insertImage(context.getContentResolver(),
-                    file.getAbsolutePath(), fileName, null);
-        } catch (FileNotFoundException e) {
-
-            e.printStackTrace();
-        }
         // 最后通知图库更新
-        // context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(file.getPath()))));
     }
 }
