@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
@@ -27,6 +28,8 @@ import com.qilu.core.util.callback.IGlobalCallback;
 import com.qilu.core.util.storage.ImageHistoryHelper;
 import com.qilu.ec.main.util.Image;
 import com.qilu.ui.image.GlideTools;
+
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -230,7 +233,7 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     private String getTime() {
         Date date = new Date();
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd :hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = dateFormat.format(date);
         Log.i("美妆时间", time);
         return time;
@@ -301,5 +304,12 @@ public class DecorateDelegate extends BottomItemDelegate implements View.OnClick
     @Override
     public void onDestroy() {
         super.onDestroy();
+        //删除缓存图片
+        File file = new File(img_1_path);
+        if (file.exists())
+            file.delete();
+        file = new File(img_2_path);
+        if (file.exists())
+            file.delete();
     }
 }

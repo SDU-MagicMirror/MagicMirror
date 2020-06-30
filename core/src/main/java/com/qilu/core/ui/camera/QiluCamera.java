@@ -10,7 +10,7 @@ public class QiluCamera {
 
     public static Uri createCropFile() {
         return Uri.parse
-                (FileUtil.createFile("crop_image",
+                (FileUtil.createFile("MagicMirror",
                         FileUtil.getFileNameByTime("IMG", "jpg")).getPath());
     }
 

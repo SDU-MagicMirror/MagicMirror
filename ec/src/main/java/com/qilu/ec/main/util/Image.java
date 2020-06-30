@@ -109,8 +109,11 @@ public class Image {
         FileOutputStream out = null;
         try {
             // 解码，然后将字节转换为文件
-            Log.i("存储目录", String.valueOf(Environment.getExternalStorageDirectory()));
-            file = new File(Environment.getExternalStorageDirectory(), fileName);
+            File appDir = new File(Environment.getExternalStorageDirectory(), "MagicMirror");
+            if (!appDir.exists()) {
+                appDir.mkdir();
+            }
+            file = new File(appDir, fileName);
             if (!file.exists())
                 file.createNewFile();
             else {

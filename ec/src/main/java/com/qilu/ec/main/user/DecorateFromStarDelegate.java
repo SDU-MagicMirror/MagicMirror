@@ -241,7 +241,7 @@ public class DecorateFromStarDelegate extends QiluDelegate implements View.OnCli
 
     private String getTime() {
         Date date = new Date();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd :hh:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = dateFormat.format(date);
         Log.i("美妆时间", time);
         return time;
@@ -313,6 +313,9 @@ public class DecorateFromStarDelegate extends QiluDelegate implements View.OnCli
     public void onDestroy() {
         super.onDestroy();
         File file = new File(img_1_path);
+        if (file.exists())
+            file.delete();
+        file = new File(img_2_path);
         if (file.exists())
             file.delete();
     }
