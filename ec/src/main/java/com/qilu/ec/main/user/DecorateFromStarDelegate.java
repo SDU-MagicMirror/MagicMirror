@@ -1,7 +1,6 @@
 package com.qilu.ec.main.user;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -21,18 +20,13 @@ import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.qilu.core.delegates.QiluDelegate;
-import com.qilu.core.delegates.bottom.BottomItemDelegate;
 import com.qilu.core.ec.R;
 import com.qilu.core.net.RestClient;
-import com.qilu.core.net.callback.IError;
-import com.qilu.core.net.callback.IFailure;
-import com.qilu.core.net.callback.ISuccess;
 import com.qilu.core.util.callback.CallbackManager;
 import com.qilu.core.util.callback.CallbackType;
 import com.qilu.core.util.callback.IGlobalCallback;
 import com.qilu.core.util.storage.ImageHistoryHelper;
 import com.qilu.ec.main.util.Image;
-import com.qilu.ec.sign.ISignListener;
 import com.qilu.ui.image.GlideTools;
 
 import java.io.File;
