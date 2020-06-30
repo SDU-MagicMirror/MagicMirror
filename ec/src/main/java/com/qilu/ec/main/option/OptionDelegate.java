@@ -223,7 +223,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
         dialog.setPositiveButton("确定", (dialog1, which) -> {
             //关闭对话框
             String newName = String.valueOf(name.getText());
-            if(!newName.trim().isEmpty()) {
+            if (!newName.trim().isEmpty()) {
                 // TODO 提交修改昵称
                 RestClient.builder()
                         .url("http://106.13.96.60:8888/account/update")
@@ -252,8 +252,7 @@ public class OptionDelegate extends QiluDelegate implements View.OnClickListener
                         })
                         .build()
                         .postRawWithToken();
-            }
-            else{
+            } else {
                 Toast.makeText(getContext(), "不能为空", Toast.LENGTH_SHORT).show();
             }
         });
